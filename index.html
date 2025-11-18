@@ -1,69 +1,334 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sladkosti do domácnosti – Pedro</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #fafafa;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background: #ff3b3b;
-            padding: 20px;
-            color: white;
-            text-align: center;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .content {
-            padding: 20px;
-        }
-        .product-box {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.1);
-        }
-        .footer {
-            margin-top: 40px;
-            text-align: center;
-            padding: 20px;
-            background: #eee;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sladkosti do domácnosti</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#fafafa;--card:#fff;--text:#1c1c1c;--muted:#6b7280;--brand:#7c3aed;--brand-2:#f4f0ff;--radius:16px;--shadow:0 12px 30px rgba(0,0,0,.08)}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#fff,rgba(255,255,255,.96));backdrop-filter:saturate(1.2) blur(6px);border-bottom:1px solid #eee}
+    .wrap{max-width:1100px;margin:0 auto;padding:18px 20px}
+    .topbar{display:flex;gap:14px;align-items:center;justify-content:space-between}
+    .brand h1{margin:0;font-size:1.5rem;color:var(--brand)}
+    .brand small{color:var(--muted)}
+    nav a{margin-right:14px;text-decoration:none;color:var(--brand)}
+    .lang{display:flex;gap:6px;align-items:center}
+    .lang button{border:1px solid #ddd;background:#fff;padding:.45rem .7rem;border-radius:12px;cursor:pointer}
+    .lang button.active{border-color:var(--brand);color:#fff;background:var(--brand)}
+    .hero{padding:24px 20px;background:radial-gradient(80% 100% at 10% 10%, var(--brand-2), transparent);border-radius:16px}
+    .panel{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+    .panel .row{display:grid;gap:14px;grid-template-columns:1fr}
+    @media(min-width:860px){.panel .row{grid-template-columns:2fr 1fr}}
+    .tools{display:flex;gap:10px;flex-wrap:wrap}
+    .tools input[type="search"], .tools select{padding:.7rem .9rem;border:1px solid #e5e7eb;border-radius:12px;background:#fff;min-width:240px;outline:none}
+    .tools input[type="search"]:focus, .tools select:focus{border-color:#c7b7ff; box-shadow:0 0 0 3px rgba(199,183,255,.35)}
+    .tools a.btn, .btn{padding:.7rem 1rem;border-radius:999px;background:var(--brand);color:#fff;text-decoration:none;border:0;display:inline-block;font-weight:600;box-shadow:0 8px 18px rgba(124,58,237,.2)}
+    .btn:hover{transform:translateY(-1px); box-shadow:0 12px 24px rgba(124,58,237,.28)}
+    h2{margin:22px 0 10px}
+    .grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;position:relative}
+    .card:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(0,0,0,.12)}
+    .card img{width:100%;height:190px;object-fit:cover}
+    .card .body{padding:14px 14px 18px}
+    .price{position:absolute;top:10px;right:10px;background:var(--brand);color:#fff;padding:.35rem .6rem;border-radius:999px;font-weight:700;box-shadow:0 6px 14px rgba(124,58,237,.3)}
+    .muted{color:var(--muted)}
+    details{border-top:1px solid #f0f0f0;padding:10px 14px}
+    footer{margin-top:40px;background:linear-gradient(90deg,var(--brand),#6d28d9);color:#fff}
+    footer a{color:#fff}
+    .contact{display:grid;gap:10px}
+    .modal{background:rgba(0,0,0,.4);position:fixed;inset:0;display:none;place-items:center;padding:20px}
+    .modal.open{display:grid}
+    .modal .box{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);max-width:900px;width:100%;padding:16px}
+    .modal .frame{width:100%;height:80vh;border:0;border-radius:12px;background:#fff}
+    .modal.full{padding:0}
+    .modal.full .box{max-width:100vw;width:100vw;height:100vh;border-radius:0}
+    .modal.full .frame{height:100vh;border-radius:0}
+    .modal.full .box > .bar{padding:10px 16px}
+    .modal .toolbar{display:flex;gap:8px;align-items:center}
+  </style>
 </head>
 <body>
+  <header>
+    <div class="wrap topbar">
+      <div class="brand">
+        <h1 data-i18n="site.title">Sladkosti do domácnosti</h1>
+        <small data-i18n="site.tag">Moderný výber cukroviniek pre vašu domácnosť</small>
+      </div>
+      <nav>
+        <a href="#produkty" data-i18n="nav.products">Produkty</a>
+        <a href="#kontakt" data-i18n="nav.contact">Kontakt</a>
+        <a href="https://www.facebook.com/sladkostidodomacnosti" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://global.ceskecukrovinky.sk/content/17-katalog" target="_blank" rel="noopener" data-i18n="nav.catalog">Katalóg</a>
+      </nav>
+      <div class="lang" aria-label="Language switcher">
+        <button type="button" data-lang="sk" class="active">SK</button>
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="cs">CZ</button>
+        <button type="button" data-lang="de">DE</button>
+      </div>
+    </div>
+  </header>
 
-<header>
-    Sladkosti do domácnosti – Pedro
-</header>
+  <main class="wrap">
+    <section class="hero">
+      <div class="panel">
+        <div class="row">
+          <div>
+            <h2 data-i18n="hero.title">Vitajte v našom sladkom obchode</h2>
+            <p class="muted" data-i18n="hero.lead">Vyberáme obľúbené cukrovinky značky Pedro a ďalšie české cukrovinky. Prehľadná galéria, ceny v eurách a rýchly kontakt.</p>
+          </div>
+          <div>
+            <div class="tools">
+              <input id="q" type="search" placeholder="Hľadať produkt…" data-i18n-placeholder="search.placeholder" />
+              <select id="cat" aria-label="Filter">
+                <option value="all" data-i18n="filter.all">Všetky kategórie</option>
+                <option value="pedro" data-i18n="filter.pedro">Pedro</option>
+                <option value="zele" data-i18n="filter.zele">Želé / žuvačky</option>
+              </select>
+              <a class="btn" href="https://global.ceskecukrovinky.sk/content/17-katalog" target="_blank" rel="noopener" data-i18n="cta.catalog">Otvoriť katalóg</a>
+              <button class="btn" id="openCatalog" type="button" data-i18n="cta.catalogInline">Zobraziť celý katalóg</button>
+              <button class="btn" id="importBtn" type="button" title="Pridať veľa produktov naraz">Importovať produkty</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<div class="content">
-    <h2>Vitajte v našom e-shope</h2>
-    <p>Ponúkame sladkosti značky Pedro podľa katalógu Global 3000.</p>
-
-    <div class="product-box">
-        <h3>Pedro sladkosti</h3>
-        <p>Katalóg všetkých produktov:</p>
-        <a href="https://global.ceskecukrovinky.sk/content/17-katalog" target="_blank">
-            Otvoriť katalóg
-        </a>
+    <div id="importModal" class="modal" aria-hidden="true">
+      <div class="box">
+        <h3 style="margin:0 0 8px">Import produktov (JSON)</h3>
+        <p class="muted" style="margin:0 0 10px">Vlož JSON pole produktov podľa šablóny nižšie a klikni <strong>Načítať</strong>.</p>
+        <textarea id="importTextarea" spellcheck="false">[
+  {
+    "id":"cola-bottles",
+    "cat":["pedro","zele"],
+    "images":["https://global.ceskecukrovinky.sk/img/cms/produkty/pedro-cola.jpg"],
+    "name":{"sk":"Pedro Cola fľaštičky 1000 g","en":"Pedro Cola Bottles 1000 g","cs":"Pedro Cola lahvičky 1000 g","de":"Pedro Cola Fläschchen 1000 g"},
+    "desc":{"sk":"Želé s colovou príchuťou.","en":"Cola-flavoured jellies.","cs":"Želé s colovou příchutí.","de":"Gummis mit Cola-Geschmack."},
+    "priceEUR":5.90,
+    "comp":{"sk":"glukózový sirup, cukor, želatína, kyseliny, arómy","en":"glucose syrup, sugar, gelatine, acids, flavours","cs":"glukózový sirup, cukr, želatina, kyseliny, aromata","de":"Glukosesirup, Zucker, Gelatine, Säuren, Aromen"}
+  }
+]</textarea>
+        <div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end">
+          <button class="btn" id="loadJsonBtn" type="button">Načítať</button>
+          <button class="btn" id="closeImportBtn" type="button" style="background:#666">Zavrieť</button>
+        </div>
+      </div>
     </div>
 
-    <h3>Kontakt</h3>
-    <p>Email: <b>toblovaanna.praca@gmail.com</b></p>
-    <p>Telefón: <b>0908068739</b></p>
-    <p>Facebook: <b>Sladkosti do domácnosti</b></p>
-</div>
+    <div id="catalogModal" class="modal" aria-hidden="true">
+      <div class="box">
+        <div class="bar" style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px">
+          <h3 style="margin:0" data-i18n="catalog.title">Katalóg</h3>
+          <div class="toolbar">
+            <button class="btn" id="toggleFullCatalog" type="button" data-i18n="catalog.fullscreen">Celá obrazovka</button>
+            <button class="btn" id="closeCatalog" type="button" style="background:#666" data-i18n="catalog.close">Zavrieť</button>
+          </div>
+        </div>
+        <iframe class="frame" src="https://global.ceskecukrovinky.sk/content/17-katalog" title="Katalóg – Global 3000"></iframe>
+      </div>
+    </div>
 
-<div class="footer">
-    © 2025 Sladkosti do domácnosti – Pedro
-</div>
+    <section id="produkty">
+      <h2 data-i18n="products.title">Produkty</h2>
+      <div id="grid" class="grid" aria-live="polite"></div>
+    </section>
 
+    <section id="kontakt">
+      <h2 data-i18n="contact.title">Kontakt</h2>
+      <div class="panel contact">
+        <div><strong data-i18n="contact.emailL">Email:</strong> <a href="mailto:toblovaanna.praca@gmail.com">toblovaanna.praca@gmail.com</a></div>
+        <div><strong data-i18n="contact.phoneL">Telefón:</strong> <a href="tel:+421908068739">0908 068 739</a></div>
+        <div><strong>Facebook:</strong> <a href="https://www.facebook.com/sladkostidodomacnosti" target="_blank" rel="noopener">Sladkosti do domácnosti</a></div>
+        <form action="mailto:toblovaanna.praca@gmail.com" method="post" enctype="text/plain" style="margin-top:6px;display:grid;gap:10px">
+          <input name="name" required placeholder="Vaše meno" data-i18n-placeholder="form.name" />
+          <input name="email" type="email" required placeholder="Váš email" data-i18n-placeholder="form.email" />
+          <textarea name="message" rows="3" placeholder="Vaša správa" data-i18n-placeholder="form.msg"></textarea>
+          <button type="submit" style="justify-self:start" class="btn" data-i18n="form.send">Odoslať</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:18px 20px;align-items:center">
+      <div>© 2025 Sladkosti do domácnosti</div>
+      <div class="muted">Made with ❤</div>
+    </div>
+  </footer>
+
+  <script>
+    const T = {
+      sk: { site:{title:"Sladkosti do domácnosti", tag:"Moderný výber cukroviniek pre vašu domácnosť"}, nav:{products:"Produkty", contact:"Kontakt", catalog:"Katalóg"}, hero:{title:"Vitajte v našom sladkom obchode", lead:"Vyberáme obľúbené cukrovinky značky Pedro a ďalšie české cukrovinky. Prehľadná galéria, ceny v eurách a rýchly kontakt."}, search:{placeholder:"🔍 Hľadať produkt…"}, filter:{all:"Všetky kategórie", pedro:"Pedro", zele:"Želé / žuvačky"}, cta:{catalog:"Otvoriť katalóg", catalogInline:"Zobraziť celý katalóg"}, products:{title:"Produkty"}, contact:{title:"Kontakt", emailL:"Email:", phoneL:"Telefón:"}, form:{name:"Vaše meno", email:"Váš email", msg:"Vaša správa", send:"Odoslať"}, catalog:{title:"Katalóg", close:"Zavrieť", fullscreen:"Celá obrazovka", exitFullscreen:"Ukončiť celú obrazovku"} },
+      en: { site:{title:"Sweets for Home", tag:"A modern selection of confectionery for your home"}, nav:{products:"Products", contact:"Contact", catalog:"Catalogue"}, hero:{title:"Welcome to our sweet shop", lead:"We curate favorite Pedro sweets and other Czech candies. Clear gallery, prices in EUR and quick contact."}, search:{placeholder:"🔍 Search product…"}, filter:{all:"All categories", pedro:"Pedro", zele:"Jellies / Chewy"}, cta:{catalog:"Open catalogue", catalogInline:"View full catalogue"}, products:{title:"Products"}, contact:{title:"Contact", emailL:"Email:", phoneL:"Phone:"}, form:{name:"Your name", email:"Your email", msg:"Your message", send:"Send"}, catalog:{title:"Catalogue", close:"Close", fullscreen:"Fullscreen", exitFullscreen:"Exit fullscreen"} },
+      cs: { site:{title:"Sladkosti do domácnosti", tag:"Moderní výběr cukrovinek pro vaši domácnost"}, nav:{products:"Produkty", contact:"Kontakt", catalog:"Katalog"}, hero:{title:"Vítejte v našem sladkém obchůdku", lead:"Vybíráme oblíbené cukrovinky Pedro a další české cukrovinky. Přehledná galerie, ceny v eurech a rychlý kontakt."}, search:{placeholder:"🔍 Hledat produkt…"}, filter:{all:"Všechny kategorie", pedro:"Pedro", zele:"Želé / žvýkací"}, cta:{catalog:"Otevřít katalog", catalogInline:"Zobrazit celý katalog"}, products:{title:"Produkty"}, contact:{title:"Kontakt", emailL:"E-mail:", phoneL:"Telefon:"}, form:{name:"Vaše jméno", email:"Váš e-mail", msg:"Vaše zpráva", send:"Odeslat"}, catalog:{title:"Katalog", close:"Zavřít", fullscreen:"Celá obrazovka", exitFullscreen:"Ukončit celou obrazovku"} },
+      de: { site:{title:"Süßigkeiten für Zuhause", tag:"Moderne Auswahl an Süßwaren für Ihr Zuhause"}, nav:{products:"Produkte", contact:"Kontakt", catalog:"Katalog"}, hero:{title:"Willkommen in unserem süßen Shop", lead:"Wir kuratieren beliebte Pedro-Süßigkeiten und weitere tschechische Süßwaren. Übersichtliche Galerie, Preise in EUR und schneller Kontakt."}, search:{placeholder:"🔍 Produkt suchen…"}, filter:{all:"Alle Kategorien", pedro:"Pedro", zele:"Gummis / Kaubonbons"}, cta:{catalog:"Katalog öffnen", catalogInline:"Gesamten Katalog anzeigen"}, products:{title:"Produkte"}, contact:{title:"Kontakt", emailL:"E-Mail:", phoneL:"Telefon:"}, form:{name:"Ihr Name", email:"Ihre E-Mail", msg:"Ihre Nachricht", send:"Senden"}, catalog:{title:"Katalog", close:"Schließen", fullscreen:"Vollbild", exitFullscreen:"Vollbild verlassen"} }
+    };
+    const DETAILS_LABEL = { sk:'Zloženie a detaily', en:'Ingredients & details', cs:'Složení a detaily', de:'Zutaten & Details' };
+
+    const PRODUCTS = [
+      {id:'006-volske-vajcia-1000',cat:['pedro','zele'],url:'https://global.ceskecukrovinky.sk/zele/34-006-pedro-volske-vajcia-1000g.html',images:[''],name:{sk:'006 - Pedro volské vajcia 1000 g',en:'006 - Pedro Fried Eggs 1000 g',cs:'006 - Pedro volská vejce 1000 g',de:'006 - Pedro Spiegeleier 1000 g'},desc:{sk:'Želé vajíčka.',en:'Egg-shaped jellies.',cs:'Želé vejce.',de:'Ei-Gummis.'},priceEUR:5.90,comp:{sk:'—',en:'—',cs:'—',de:'—'}},
+      {id:'007-ovocny-mix-1000',cat:['pedro','zele'],url:'https://global.ceskecukrovinky.sk/zele/35-007-pedro-zele-ovocny-mix-1000g.html',images:[''],name:{sk:'007 - Pedro želé ovocný mix 1000 g',en:'007 - Pedro Fruit Jelly Mix 1000 g',cs:'007 - Pedro želé ovocný mix 1000 g',de:'007 - Pedro Obst-Mix 1000 g'},desc:{sk:'Ovocné želé.',en:'Fruit jelly.',cs:'Ovocné želé.',de:'Fruchtgummi.'},priceEUR:5.90,comp:{sk:'—',en:'—',cs:'—',de:'—'}},
+      {id:'008-medvediky-1000',cat:['pedro','zele'],url:'https://global.ceskecukrovinky.sk/zele/36-008-pedro-zele-medvediky1000g.html',images:[''],name:{sk:'008 - Pedro želé medvedíky 1000 g',en:'008 - Pedro Jelly Bears 1000 g',cs:'008 - Pedro želé medvídky 1000 g',de:'008 - Pedro Gummibären 1000 g'},desc:{sk:'Klasické medvedíky.',en:'Classic jelly bears.',cs:'Klasické medvídky.',de:'Klassische Gummibären.'},priceEUR:5.90,comp:{sk:'—',en:'—',cs:'—',de:'—'}},
+      {id:'010-hady-1000',cat:['pedro','zele'],url:'https://global.ceskecukrovinky.sk/zele/38-010-pedro-zele-hady-1000g.html',images:[''],name:{sk:'010 - Pedro želé hady 1000 g',en:'010 - Pedro Jelly Snakes 1000 g',cs:'010 - Pedro želé hadi 1000 g',de:'010 - Pedro Gummi-Schlangen 1000 g'},desc:{sk:'Želé hady.',en:'Jelly snakes.',cs:'Želé hadi.',de:'Gummischlangen.'},priceEUR:5.90,comp:{sk:'—',en:'—',cs:'—',de:'—'}},
+      {id:'011-sladke-dazdovky-1000',cat:['pedro','zele'],url:'https://global.ceskecukrovinky.sk/zele/39-011-pedro-zele-sladke-dazdovky-1000g.html',images:[''],name:{sk:'011 - Pedro želé sladké dážďovky 1000 g',en:'011 - Pedro Sweet Worms 1000 g',cs:'011 - Pedro sladcí červi 1000 g',de:'011 - Pedro süße Würmer 1000 g'},desc:{sk:'Sladké dážďovky.',en:'Sweet worms.',cs:'Sladcí červi.',de:'Süße Würmer.'},priceEUR:5.90,comp:{sk:'—',en:'—',cs:'—',de:'—'}},
+      {id:'012-kysli-cervy-1000',cat:['pedro','zele'],url:'https://global.ceskecukrovinky.sk/zele/40-012-pedro-zele-kysli-cervy-1000g.html',images:[''],name:{sk:'012 - Pedro želé kyslí červy 1000 g',en:'012 - Pedro Sour Worms 1000 g',cs:'012 - Pedro kyselí červi 1000 g',de:'012 - Pedro Saure Würmer 1000 g'},desc:{sk:'Kyslé červíky.',en:'Sour worms.',cs:'Kyselí červi.',de:'Saure Würmer.'},priceEUR:5.90,comp:{sk:'—',en:'—',cs:'—',de:'—'}},
+      {id:'017-velky-medved-1000',cat:['pedro','zele'],url:'https://global.ceskecukrovinky.sk/zele/41-017-pedro-dvojfarebne-zele-velky-medved-1000g.html',images:[''],name:{sk:'017 - Pedro dvojfarebné želé veľký medveď 1000 g',en:'017 - Pedro Two-Color Big Bear 1000 g',cs:'017 - Pedro dvoubarevné želé velký medvěd 1000 g',de:'017 - Pedro zweifarbig Bär 1000 g'},desc:{sk:'Dvojfarebný medveď.',en:'Two-color bear.',cs:'Dvoubarevný medvěd.',de:'Zweifarbiger Bär.'},priceEUR:5.90,comp:{sk:'—',en:'—',cs:'—',de:'—'}},
+      {id:'018-cola-flasticky-1000',cat:['pedro','zele'],url:'https://global.ceskecukrovinky.sk/zele/37-018-pedro-cola-flasticky-1000g.html',images:[''],name:{sk:'018 - Pedro cola fľaštičky 1000 g',en:'018 - Pedro Cola Bottles 1000 g',cs:'018 - Pedro Cola lahvičky 1000 g',de:'018 - Pedro Cola Fläschchen 1000 g'},desc:{sk:'Colové fľaštičky.',en:'Cola bottles.',cs:'Cola lahvičky.',de:'Cola-Fläschchen.'},priceEUR:5.90,comp:{sk:'glukózový sirup, cukor, želatína …',en:'glucose syrup, sugar, gelatine …',cs:'glukózový sirup, cukr, želatina …',de:'Glukosesirup, Zucker, Gelatine …'}},
+      {id:'019-drakula-zuby-1000',cat:['pedro','zele'],url:'https://global.ceskecukrovinky.sk/zele/42-019-pedro-dvojfarebne-zele-drakula-zuby-1000g.html',images:[''],name:{sk:'019 - Pedro dvojfarebné želé drakula zuby 1000 g',en:'019 - Pedro Dracula Teeth 1000 g',cs:'019 - Pedro Drákulovy zuby 1000 g',de:'019 - Pedro Dracula Zähne 1000 g'},desc:{sk:'Želé zuby.',en:'Jelly teeth.',cs:'Želé zuby.',de:'Gummizähne.'},priceEUR:5.90,comp:{sk:'—',en:'—',cs:'—',de:'—'}},
+      {id:'020-motyle-1000',cat:['pedro','zele'],url:'https://global.ceskecukrovinky.sk/zele/43-020-pedro-vocne-zele-motyle-1000g.html',images:[''],name:{sk:'020 - Pedro ovocné želé motýle 1000 g',en:'020 - Pedro Fruit Butterflies 1000 g',cs:'020 - Pedro ovocné želé motýli 1000 g',de:'020 - Pedro Frucht-Schmetterlinge 1000 g'},desc:{sk:'Ovocné motýle.',en:'Fruit butterflies.',cs:'Ovocní motýli.',de:'Frucht-Schmetterlinge.'},priceEUR:5.90,comp:{sk:'—',en:'—',cs:'—',de:'—'}},
+      {id:'021-kysly-mix-1000',cat:['pedro','zele'],url:'https://global.ceskecukrovinky.sk/zele/44-021-pedro-kysly-mix-1000g.html',images:[''],name:{sk:'021 - Pedro kyslý mix 1000 g',en:'021 - Pedro Sour Mix 1000 g',cs:'021 - Pedro kyselý mix 1000 g',de:'021 - Pedro Sauer-Mix 1000 g'},desc:{sk:'Kyslý mix.',en:'Sour mix.',cs:'Kyselý mix.',de:'Saure Mischung.'},priceEUR:5.90,comp:{sk:'—',en:'—',cs:'—',de:'—'}},
+      {id:'022-broskynove-srdiecka-1000',cat:['pedro','zele'],url:'https://global.ceskecukrovinky.sk/zele/45-022-pedro-kysla-srdiecka-broskyna-1000g.html',images:[''],name:{sk:'022 - Pedro kyslá srdiečka broskyňa 1000 g',en:'022 - Pedro Sour Hearts Peach 1000 g',cs:'022 - Pedro kyselá srdíčka broskev 1000 g',de:'022 - Pedro Saure Herzen Pfirsich 1000 g'},desc:{sk:'Kyslé srdiečka.',en:'Sour hearts.',cs:'Kyselá srdíčka.',de:'Saure Herzen.'},priceEUR:5.90,comp:{sk:'—',en:'—',cs:'—',de:'—'}},
+      {id:'028-maliny-cernice-olej-1000',cat:['pedro','zele'],url:'https://global.ceskecukrovinky.sk/zele/52-028-pedro-maliny-a-cernice-olejovane-zele-1000g.html',images:[''],name:{sk:'028 - Pedro maliny a černice (olejované) 1000 g',en:'028 - Pedro Raspberries & Blackberries (oiled) 1000 g',cs:'028 - Pedro maliny a ostružiny (olejované) 1000 g',de:'028 - Pedro Himbeeren & Brombeeren (geölt) 1000 g'},desc:{sk:'Maliny a černice.',en:'Raspberries & blackberries.',cs:'Maliny a ostružiny.',de:'Himbeeren & Brombeeren.'},priceEUR:5.90,comp:{sk:'—',en:'—',cs:'—',de:'—'}},
+      {id:'049-maliny-cernice-1000',cat:['pedro','zele'],url:'https://global.ceskecukrovinky.sk/zele/64-049-maliny-a-cernice-1000g.html',images:[''],name:{sk:'049 - Maliny a Černice 1000 g',en:'049 - Raspberries & Blackberries 1000 g',cs:'049 - Maliny a Ostružiny 1000 g',de:'049 - Himbeeren & Brombeeren 1000 g'},desc:{sk:'Želé s malinovo-černicovou príchuťou.',en:'Berry jelly.',cs:'Bobulové želé.',de:'Beeren-Gummis.'},priceEUR:6.85,comp:{sk:'—',en:'—',cs:'—',de:'—'}},
+      {id:'050-tutti-frutti-medvedik-1000',cat:['pedro','zele'],url:'https://global.ceskecukrovinky.sk/zele/66-050-pedro-tutti-frutti-medvedik-1000g.html',images:[''],name:{sk:'050 - Pedro Tutti Frutti medvedík 1000 g',en:'050 - Pedro Tutti Frutti Bear 1000 g',cs:'050 - Pedro Tutti Frutti medvídek 1000 g',de:'050 - Pedro Tutti Frutti Bär 1000 g'},desc:{sk:'Ovocné medvedíky.',en:'Fruit bears.',cs:'Ovocní medvídci.',de:'Fruchtbären.'},priceEUR:5.90,comp:{sk:'—',en:'—',cs:'—',de:'—'}},
+      {id:'004-pendreky-kocky-1000',cat:['pedro','pendreky'],url:'https://global.ceskecukrovinky.sk/pelendreky-a-pasky/57-004-pedro-pelendreky-kocky-1000g.html',images:[''],name:{sk:'004 - Pedro pelendreky kocky 1000 g',en:'004 - Pedro Licorice Cubes 1000 g',cs:'004 - Pedro pendreky kostky 1000 g',de:'004 - Pedro Lakritz Würfel 1000 g'},desc:{sk:'Retro pendreky v kockách.',en:'Retro licorice cubes.',cs:'Retro pendreky v kostkách.',de:'Retro Lakritz in Würfeln.'},priceEUR:7.86,comp:{sk:'—',en:'—',cs:'—',de:'—'}},
+      {id:'005-cierne-pendreky-1000',cat:['pedro','pendreky'],url:'https://global.ceskecukrovinky.sk/pelendreky-a-pasky/59-005-pedro-cierne-pelendreky-1000g.html',images:[''],name:{sk:'005 - Pedro čierne pelendreky 1000 g',en:'005 - Pedro Black Licorice 1000 g',cs:'005 - Pedro černé pendreky 1000 g',de:'005 - Pedro Schwarze Lakritz 1000 g'},desc:{sk:'Klasické čierne pendreky.',en:'Classic black licorice.',cs:'Klasické černé pendreky.',de:'Klassische schwarze Lakritz.'},priceEUR:7.86,comp:{sk:'—',en:'—',cs:'—',de:'—'}}
+    ];
+
+    const grid = document.getElementById('grid');
+    const q = document.getElementById('q');
+    const cat = document.getElementById('cat');
+    let lang = 'sk';
+
+    const importBtn = document.getElementById('importBtn');
+    const importModal = document.getElementById('importModal');
+    const importTextarea = document.getElementById('importTextarea');
+    const loadJsonBtn = document.getElementById('loadJsonBtn');
+    const closeImportBtn = document.getElementById('closeImportBtn');
+
+    const openCatalog = document.getElementById('openCatalog');
+    const catalogModal = document.getElementById('catalogModal');
+    const closeCatalog = document.getElementById('closeCatalog');
+    const toggleFullCatalog = document.getElementById('toggleFullCatalog');
+
+    function formatEUR(n){ return n.toFixed(2).replace('.',',') + ' €'; }
+
+    function card(p){
+      const el = document.createElement('article');
+      el.className = 'card';
+      el.dataset.cats = p.cat.join(',');
+      const img = (p.images && p.images[0]) ? p.images[0] : 'https://www.ceskecukrovinky.sk/img/cms/PAN%20KILO%20175x175.png';
+      const title = p.name[lang];
+      const body = `
+        <img src="${img}" alt="${title}" loading="lazy">
+        <div class="body">
+          <div class="muted">Pedro</div>
+          <h3 style="margin:6px 0 4px">${title}</h3>
+          <div class="muted">${p.desc[lang]}</div>
+          <div class="price">${formatEUR(p.priceEUR)}</div>
+        </div>
+        <details>
+          <summary>${DETAILS_LABEL[lang]}</summary>
+          <p class="muted" style="margin:.6rem 0 0">${p.comp[lang]}</p>
+        </details>`;
+      el.innerHTML = p.url ? `<a href="${p.url}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">${body}</a>` : body;
+      return el;
+    }
+
+    function render(){
+      grid.innerHTML='';
+      const query = (q.value||'').toLowerCase();
+      const category = cat.value;
+      PRODUCTS.filter(p=>{
+        const matchesQ = !query || Object.values(p.name).some(v=>v.toLowerCase().includes(query)) || Object.values(p.desc).some(v=>v.toLowerCase().includes(query));
+        const matchesC = category==='all' || p.cat.includes(category);
+        return matchesQ && matchesC;
+      }).forEach(p=>grid.appendChild(card(p)));
+      if(!grid.children.length){
+        const empty=document.createElement('div');
+        empty.className='muted';
+        empty.textContent={sk:'Nenašli sa žiadne produkty.', en:'No products found.', cs:'Nebyly nalezeny žádné produkty.', de:'Keine Produkte gefunden.'}[lang];
+        grid.appendChild(empty);
+      }
+    }
+
+    function applyI18n(){
+      const dict=T[lang];
+      const setByKey=(sel,key)=>{const el=document.querySelector(sel); if(el){el.textContent=key.split('.').reduce((o,k)=>o[k],dict);} };
+      setByKey('[data-i18n="site.title"]','site.title');
+      setByKey('[data-i18n="site.tag"]','site.tag');
+      ['nav.products','nav.contact','nav.catalog','hero.title','hero.lead','products.title','contact.title','contact.emailL','contact.phoneL','form.send','filter.all','filter.pedro','filter.zele','cta.catalog','cta.catalogInline','catalog.title','catalog.close','catalog.fullscreen','catalog.exitFullscreen']
+        .forEach(key=>{const el=document.querySelector(`[data-i18n="${key}"]`); if(el){el.textContent=key.split('.').reduce((o,k)=>o[k],dict);} });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+        const path=el.getAttribute('data-i18n-placeholder');
+        el.placeholder=path.split('.').reduce((o,k)=>o[k],dict);
+      });
+      render();
+      if(toggleFullCatalog && catalogModal){
+        const d=T[lang].catalog; toggleFullCatalog.textContent = catalogModal.classList.contains('full') ? d.exitFullscreen : d.fullscreen;
+      }
+    }
+
+    q.addEventListener('input', render);
+    cat.addEventListener('change', render);
+    document.querySelectorAll('.lang button').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.lang button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        lang=btn.dataset.lang; applyI18n();
+      });
+    });
+
+    function openImport(){importModal.classList.add('open');importModal.setAttribute('aria-hidden','false');}
+    function closeImport(){importModal.classList.remove('open');importModal.setAttribute('aria-hidden','true');}
+    importBtn.addEventListener('click',openImport);
+    closeImportBtn.addEventListener('click',closeImport);
+
+    function openCat(){catalogModal.classList.add('open');catalogModal.setAttribute('aria-hidden','false');}
+    function closeCat(){catalogModal.classList.remove('open');catalogModal.classList.remove('full');catalogModal.setAttribute('aria-hidden','true');}
+    function toggleFull(){
+      catalogModal.classList.toggle('full');
+      const d=T[lang].catalog; toggleFullCatalog.textContent = catalogModal.classList.contains('full') ? d.exitFullscreen : d.fullscreen;
+    }
+    openCatalog.addEventListener('click',openCat);
+    closeCatalog.addEventListener('click',closeCat);
+    toggleFullCatalog.addEventListener('click',toggleFull);
+
+    applyI18n();
+
+    (function runTests(){
+      try{
+        console.groupCollapsed('Smoke tests');
+        console.assert(formatEUR(1)==='1,00 €','formatEUR failed');
+        const before=lang; lang='en'; applyI18n(); console.assert(document.querySelector('[data-i18n="site.title"]').textContent===T.en.site.title,'EN title failed');
+        lang=before; applyI18n();
+        q.value='pedro'; render(); console.assert(document.getElementById('grid').children.length>0,'search should find products'); q.value=''; render();
+        console.assert(!!catalogModal && !!toggleFullCatalog,'catalog modal refs exist');
+        const lblBefore = toggleFullCatalog.textContent; toggleFull(); const lblAfter = toggleFullCatalog.textContent; console.assert(lblBefore!==lblAfter,'fullscreen label should toggle'); toggleFull();
+        console.log('All tests passed');
+        console.groupEnd();
+      }catch(e){ console.error('Tests failed', e); }
+    })();
+
+    function validateProduct(p){ const required=['id','cat','images','name','desc','priceEUR','comp']; return required.every(k=>k in p); }
+    loadJsonBtn.addEventListener('click',()=>{
+      try{
+        const data=JSON.parse(importTextarea.value);
+        if(!Array.isArray(data)) throw new Error('JSON nie je pole.');
+        const valid=data.filter(validateProduct);
+        if(valid.length!==data.length){ console.warn('Niektoré položky neprešli validáciou.'); }
+        PRODUCTS.push(...valid);
+        render();
+        closeImport();
+      }catch(err){ alert('Chyba pri načítaní JSON: '+err.message); }
+    });
+
+    document.addEventListener('keydown',(e)=>{
+      const anyOpen = document.querySelector('.modal.open');
+      if(e.key==='Escape' && anyOpen){
+        if(anyOpen.id==='catalogModal') closeCat();
+        if(anyOpen.id==='importModal') closeImport();
+      }
+      if(e.key.toLowerCase()==='f' && document.activeElement.tagName!=='INPUT' && document.activeElement.tagName!=='TEXTAREA'){
+        if(catalogModal.classList.contains('open')) toggleFull();
+      }
+    });
+  </script>
 </body>
 </html>
