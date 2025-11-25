@@ -1,1 +1,778 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sladkosti do domácnosti</title>
+
+  <!-- Google font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:#fafafa;
+      --card:#ffffff;
+      --text:#1c1c1c;
+      --muted:#6b7280;
+      --brand:#7c3aed;
+      --brand-2:#f4f0ff;
+      --radius:16px;
+      --shadow:0 12px 30px rgba(0,0,0,.08);
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:
+        url("https://global.ceskecukrovinky.sk/img/cms/bgs/background-body_4_300x300.jpg") repeat,
+        var(--bg);
+      color:var(--text);
+    }
+
+    a{color:inherit;}
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:10;
+      background:linear-gradient(180deg,#fff,rgba(255,255,255,.96));
+      backdrop-filter:saturate(1.2) blur(6px);
+      border-bottom:1px solid #eee;
+    }
+
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:18px 20px;
+    }
+
+    .topbar{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+
+    .brand h1{
+      margin:0;
+      font-size:1.5rem;
+      color:var(--brand);
+    }
+
+    .brand small{
+      color:var(--muted);
+    }
+
+    nav a{
+      margin-right:14px;
+      text-decoration:none;
+      color:var(--brand);
+      font-weight:500;
+    }
+
+    nav a:hover{text-decoration:underline;}
+
+    .lang{
+      display:flex;
+      gap:6px;
+      align-items:center;
+    }
+
+    .lang button{
+      border:1px solid #ddd;
+      background:#fff;
+      padding:.45rem .7rem;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:.8rem;
+    }
+
+    .lang button.active{
+      border-color:var(--brand);
+      color:#fff;
+      background:var(--brand);
+    }
+
+    .hero{
+      padding:24px 20px;
+      background:radial-gradient(80% 100% at 10% 10%, var(--brand-2), transparent);
+      border-radius:16px;
+    }
+
+    .panel{
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:18px;
+    }
+
+    .panel .row{
+      display:grid;
+      gap:14px;
+      grid-template-columns:1fr;
+    }
+
+    @media (min-width:860px){
+      .panel .row{grid-template-columns:2fr 1fr;}
+    }
+
+    .tools{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .tools input[type="search"],
+    .tools select{
+      padding:.7rem .9rem;
+      border:1px solid #e5e7eb;
+      border-radius:12px;
+      background:#fff;
+      min-width:220px;
+      outline:none;
+    }
+
+    .tools input[type="search"]:focus,
+    .tools select:focus{
+      border-color:#c7b7ff;
+      box-shadow:0 0 0 3px rgba(199,183,255,.35);
+    }
+
+    .btn,
+    .tools a.btn{
+      padding:.7rem 1rem;
+      border-radius:999px;
+      background:var(--brand);
+      color:#fff;
+      text-decoration:none;
+      border:0;
+      display:inline-block;
+      font-weight:600;
+      box-shadow:0 8px 18px rgba(124,58,237,.2);
+      cursor:pointer;
+      white-space:nowrap;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 12px 24px rgba(124,58,237,.28);
+    }
+
+    h2{
+      margin:22px 0 10px;
+    }
+
+    .grid{
+      display:grid;
+      gap:18px;
+      grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      position:relative;
+      min-height:100%;
+    }
+
+    .card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 40px rgba(0,0,0,.12);
+    }
+
+    .card img{
+      width:100%;
+      height:180px;
+      object-fit:cover;
+    }
+
+    .card .body{
+      padding:14px 14px 18px;
+    }
+
+    .price{
+      position:absolute;
+      top:10px;
+      right:10px;
+      background:var(--brand);
+      color:#fff;
+      padding:.35rem .6rem;
+      border-radius:999px;
+      font-weight:700;
+      box-shadow:0 6px 14px rgba(124,58,237,.3);
+    }
+
+    .muted{color:var(--muted);}
+
+    details{
+      border-top:1px solid #f0f0f0;
+      padding:10px 14px;
+      margin-top:auto;
+    }
+
+    footer{
+      margin-top:40px;
+      background:linear-gradient(90deg,var(--brand),#6d28d9);
+      color:#fff;
+    }
+
+    footer a{color:#fff;}
+
+    .contact{
+      display:grid;
+      gap:10px;
+    }
+
+    .modal{
+      background:rgba(0,0,0,.4);
+      position:fixed;
+      inset:0;
+      display:none;
+      place-items:center;
+      padding:20px;
+    }
+
+    .modal.open{display:grid;}
+
+    .modal .box{
+      background:#fff;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      max-width:900px;
+      width:100%;
+      padding:16px;
+    }
+
+    .modal .frame{
+      width:100%;
+      height:80vh;
+      border:0;
+      border-radius:12px;
+      background:#fff;
+    }
+
+    .modal.full{padding:0;}
+    .modal.full .box{
+      max-width:100vw;
+      width:100vw;
+      height:100vh;
+      border-radius:0;
+    }
+    .modal.full .frame{
+      height:100vh;
+      border-radius:0;
+    }
+    .modal.full .box > .bar{padding:10px 16px;}
+
+    .pagination{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:18px;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .pagination button{
+      border-radius:999px;
+      border:1px solid #ddd;
+      padding:.35rem .65rem;
+      background:#fff;
+      cursor:pointer;
+      min-width:32px;
+    }
+
+    .pagination button.active{
+      background:var(--brand);
+      color:#fff;
+      border-color:var(--brand);
+    }
+
+    .pagination button[disabled]{
+      opacity:.4;
+      cursor:default;
+    }
+
+    #count{
+      text-align:center;
+      margin-top:6px;
+      color:var(--muted);
+      font-size:.9rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="wrap topbar">
+      <div class="brand">
+        <h1 data-i18n="site.title">Sladkosti do domácnosti</h1>
+        <small data-i18n="site.tag">Moderný výber cukroviniek pre vašu domácnosť</small>
+      </div>
+
+      <nav>
+        <a href="#produkty" data-i18n="nav.products">Produkty</a>
+        <a href="#kontakt" data-i18n="nav.contact">Kontakt</a>
+        <a href="https://www.facebook.com/sladkostidodomacnosti"
+           target="_blank" rel="noopener">Facebook</a>
+        <a href="#katalog" data-i18n="nav.catalog">Katalóg</a>
+      </nav>
+
+      <div class="lang" aria-label="Language switcher">
+        <button type="button" data-lang="sk" class="active">SK</button>
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="cs">CZ</button>
+        <button type="button" data-lang="de">DE</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="wrap">
+    <!-- HERO + NÁSTROJE -->
+    <section class="hero">
+      <div class="panel">
+        <div class="row">
+          <div>
+            <h2 data-i18n="hero.title">Vitajte v našom sladkom obchode</h2>
+            <p class="muted" data-i18n="hero.lead">
+              Vyberáme obľúbené cukrovinky značky Pedro a ďalšie české cukrovinky.
+              Prehľadná galéria, ceny v eurách a rýchly kontakt.
+            </p>
+          </div>
+
+          <div>
+            <div class="tools">
+              <input id="q" type="search" placeholder="Hľadať produkt…"
+                     data-i18n-placeholder="search.placeholder" />
+
+              <select id="cat" aria-label="Filter">
+                <option value="all"    data-i18n="filter.all">Všetky kategórie</option>
+                <option value="pedro"  data-i18n="filter.pedro">Pedro</option>
+                <option value="zele"   data-i18n="filter.zele">Želé / žuvačky</option>
+                <option value="pendreky">Pendreky</option>
+              </select>
+
+              <button class="btn" id="openCatalog" type="button"
+                      data-i18n="cta.catalogInline">
+                Zobraziť celý katalóg
+              </button>
+
+              <a class="btn"
+                 href="https://global.ceskecukrovinky.sk/content/17-katalog"
+                 target="_blank" rel="noopener"
+                 data-i18n="cta.catalog">
+                 Otvoriť katalóg
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODAL: KATALÓG -->
+    <div id="catalogModal" class="modal" aria-hidden="true">
+      <div class="box">
+        <div class="bar"
+             style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px">
+          <h3 style="margin:0" data-i18n="catalog.title">Katalóg</h3>
+          <div class="toolbar" style="display:flex;gap:8px">
+            <button class="btn" id="toggleFullCatalog" type="button"
+                    data-i18n="catalog.fullscreen">
+              Celá obrazovka
+            </button>
+            <button class="btn" id="closeCatalog" type="button"
+                    style="background:#666" data-i18n="catalog.close">
+              Zavrieť
+            </button>
+          </div>
+        </div>
+        <iframe class="frame"
+                src="https://global.ceskecukrovinky.sk/content/17-katalog"
+                title="Katalóg – Global 3000"></iframe>
+      </div>
+    </div>
+
+    <!-- PRODUKTY -->
+    <section id="produkty">
+      <h2 data-i18n="products.title">Produkty</h2>
+      <div id="grid" class="grid" aria-live="polite"></div>
+      <div id="count"></div>
+      <div id="pagination" class="pagination"></div>
+    </section>
+
+    <!-- KONTAKT -->
+    <section id="kontakt">
+      <h2 data-i18n="contact.title">Kontakt</h2>
+      <div class="panel contact">
+        <div>
+          <strong data-i18n="contact.emailL">Email:</strong>
+          <a href="mailto:toblovaanna.praca@gmail.com">
+            toblovaanna.praca@gmail.com
+          </a>
+        </div>
+        <div>
+          <strong data-i18n="contact.phoneL">Telefón:</strong>
+          <a href="tel:+421908068739">0908 068 739</a>
+        </div>
+        <div>
+          <strong>Facebook:</strong>
+          <a href="https://www.facebook.com/sladkostidodomacnosti"
+             target="_blank" rel="noopener">
+            Sladkosti do domácnosti
+          </a>
+        </div>
+
+        <form action="mailto:toblovaanna.praca@gmail.com"
+              method="post" enctype="text/plain"
+              style="margin-top:6px;display:grid;gap:10px">
+          <input name="name" required placeholder="Vaše meno"
+                 data-i18n-placeholder="form.name" />
+          <input name="email" type="email" required
+                 placeholder="Váš email" data-i18n-placeholder="form.email" />
+          <textarea name="message" rows="3"
+                    placeholder="Vaša správa"
+                    data-i18n-placeholder="form.msg"></textarea>
+          <button type="submit" style="justify-self:start"
+                  class="btn" data-i18n="form.send">
+            Odoslať
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="katalog">
+    <div class="wrap"
+         style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:18px 20px;align-items:center">
+      <div>© 2025 Sladkosti do domácnosti</div>
+      <div class="muted">Pedro &amp; české cukrovinky</div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    /* ==== PREKLADY ==== */
+    const T = {
+      sk: {
+        site:{title:"Sladkosti do domácnosti", tag:"Moderný výber cukroviniek pre vašu domácnosť"},
+        nav:{products:"Produkty", contact:"Kontakt", catalog:"Katalóg"},
+        hero:{title:"Vitajte v našom sladkom obchode",
+              lead:"Vyberáme obľúbené cukrovinky značky Pedro a ďalšie české cukrovinky. Prehľadná galéria, ceny v eurách a rýchly kontakt."},
+        search:{placeholder:"🔍 Hľadať produkt…"},
+        filter:{all:"Všetky kategórie", pedro:"Pedro", zele:"Želé / žuvačky"},
+        cta:{catalog:"Otvoriť katalóg", catalogInline:"Zobraziť celý katalóg"},
+        products:{title:"Produkty"},
+        contact:{title:"Kontakt", emailL:"Email:", phoneL:"Telefón:"},
+        form:{name:"Vaše meno", email:"Váš email", msg:"Vaša správa", send:"Odoslať"},
+        catalog:{title:"Katalóg", close:"Zavrieť", fullscreen:"Celá obrazovka", exitFullscreen:"Ukončiť celú obrazovku"},
+        labels:{details:"Zloženie a detaily", count:"Nájdených produktov"}
+      },
+      en: {
+        site:{title:"Sweets for Home", tag:"A modern selection of confectionery for your home"},
+        nav:{products:"Products", contact:"Contact", catalog:"Catalogue"},
+        hero:{title:"Welcome to our sweet shop",
+              lead:"We curate favourite Pedro sweets and other Czech candies. Clear gallery, prices in EUR and quick contact."},
+        search:{placeholder:"🔍 Search product…"},
+        filter:{all:"All categories", pedro:"Pedro", zele:"Jellies / Chewy"},
+        cta:{catalog:"Open catalogue", catalogInline:"View full catalogue"},
+        products:{title:"Products"},
+        contact:{title:"Contact", emailL:"Email:", phoneL:"Phone:"},
+        form:{name:"Your name", email:"Your email", msg:"Your message", send:"Send"},
+        catalog:{title:"Catalogue", close:"Close", fullscreen:"Fullscreen", exitFullscreen:"Exit fullscreen"},
+        labels:{details:"Ingredients & details", count:"Products found"}
+      },
+      cs: {
+        site:{title:"Sladkosti do domácnosti", tag:"Moderní výběr cukrovinek pro vaši domácnost"},
+        nav:{products:"Produkty", contact:"Kontakt", catalog:"Katalog"},
+        hero:{title:"Vítejte v našem sladkém obchůdku",
+              lead:"Vybíráme oblíbené cukrovinky Pedro a další české cukrovinky. Přehledná galerie, ceny v eurech a rychlý kontakt."},
+        search:{placeholder:"🔍 Hledat produkt…"},
+        filter:{all:"Všechny kategorie", pedro:"Pedro", zele:"Želé / žvýkací"},
+        cta:{catalog:"Otevřít katalog", catalogInline:"Zobrazit celý katalog"},
+        products:{title:"Produkty"},
+        contact:{title:"Kontakt", emailL:"E-mail:", phoneL:"Telefon:"},
+        form:{name:"Vaše jméno", email:"Váš e-mail", msg:"Vaše zpráva", send:"Odeslat"},
+        catalog:{title:"Katalog", close:"Zavřít", fullscreen:"Celá obrazovka", exitFullscreen:"Ukončit celou obrazovku"},
+        labels:{details:"Složení a detaily", count:"Nalezené produkty"}
+      },
+      de: {
+        site:{title:"Süßigkeiten für Zuhause", tag:"Moderne Auswahl an Süßwaren für Ihr Zuhause"},
+        nav:{products:"Produkte", contact:"Kontakt", catalog:"Katalog"},
+        hero:{title:"Willkommen in unserem süßen Shop",
+              lead:"Wir kuratieren beliebte Pedro-Süßigkeiten und weitere tschechische Süßwaren. Übersichtliche Galerie, Preise in EUR und schneller Kontakt."},
+        search:{placeholder:"🔍 Produkt suchen…"},
+        filter:{all:"Alle Kategorien", pedro:"Pedro", zele:"Gummis / Kaubonbons"},
+        cta:{catalog:"Katalog öffnen", catalogInline:"Gesamten Katalog anzeigen"},
+        products:{title:"Produkte"},
+        contact:{title:"Kontakt", emailL:"E-Mail:", phoneL:"Telefon:"},
+        form:{name:"Ihr Name", email:"Ihre E-Mail", msg:"Ihre Nachricht", send:"Senden"},
+        catalog:{title:"Katalog", close:"Schließen", fullscreen:"Vollbild", exitFullscreen:"Vollbild verlassen"},
+        labels:{details:"Zutaten & Details", count:"Gefundene Produkte"}
+      }
+    };
+
+    let lang = "sk";
+
+    const grid        = document.getElementById("grid");
+    const q           = document.getElementById("q");
+    const cat         = document.getElementById("cat");
+    const pagination  = document.getElementById("pagination");
+    const countEl     = document.getElementById("count");
+
+    const openCatalog = document.getElementById("openCatalog");
+    const catalogModal= document.getElementById("catalogModal");
+    const closeCatalog= document.getElementById("closeCatalog");
+    const toggleFullCatalog = document.getElementById("toggleFullCatalog");
+
+    const PAGE_SIZE = 24;
+    let ALL_PRODUCTS = [];
+    let FILTERED = [];
+    let currentPage = 1;
+
+    /* ===== Pomocné ===== */
+    function formatEUR(n){
+      return n.toFixed(2).replace(".", ",") + " €";
+    }
+
+    function getDetailsLabel(){
+      return T[lang].labels.details;
+    }
+
+    function card(p){
+      const el = document.createElement("article");
+      el.className = "card";
+      el.dataset.cats = p.cat.join(",");
+      const img = (p.images && p.images[0])
+        ? p.images[0]
+        : "https://www.ceskecukrovinky.sk/img/cms/PAN%20KILO%20175x175.png";
+      const title = p.name[lang] || p.name.sk;
+
+      const inner = `
+        <img src="${img}" alt="${title}" loading="lazy">
+        <div class="body">
+          <div class="muted">${(p.brand || "Pedro")}</div>
+          <h3 style="margin:6px 0 4px">${title}</h3>
+          <div class="muted">${p.desc[lang] || p.desc.sk}</div>
+          <div class="price">${formatEUR(p.priceEUR)}</div>
+        </div>
+        <details>
+          <summary>${getDetailsLabel()}</summary>
+          <p class="muted" style="margin:.6rem 0 0">
+            ${(p.comp && (p.comp[lang] || p.comp.sk)) || ""}
+          </p>
+        </details>
+      `;
+
+      if (p.url){
+        el.innerHTML =
+          `<a href="${p.url}" target="_blank" rel="noopener"
+              style="text-decoration:none;color:inherit">${inner}</a>`;
+      } else {
+        el.innerHTML = inner;
+      }
+      return el;
+    }
+
+    function applyFilters(){
+      const query = (q.value || "").toLowerCase();
+      const category = cat.value;
+
+      FILTERED = ALL_PRODUCTS.filter(p => {
+        const text =
+          Object.values(p.name).join(" ").toLowerCase() + " " +
+          Object.values(p.desc).join(" ").toLowerCase();
+
+        const matchesQ = !query || text.includes(query);
+        const matchesC = (category === "all") || p.cat.includes(category);
+        return matchesQ && matchesC;
+      });
+
+      currentPage = 1;
+      render();
+    }
+
+    function render(){
+      grid.innerHTML = "";
+
+      const total = FILTERED.length;
+      const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const end   = start + PAGE_SIZE;
+
+      FILTERED.slice(start, end).forEach(p => grid.appendChild(card(p)));
+
+      if (!grid.children.length){
+        const empty = document.createElement("div");
+        empty.className = "muted";
+        empty.textContent = {
+          sk:"Nenašli sa žiadne produkty.",
+          en:"No products found.",
+          cs:"Nebyly nalezeny žádné produkty.",
+          de:"Keine Produkte gefunden."
+        }[lang];
+        grid.appendChild(empty);
+      }
+
+      const label = T[lang].labels.count;
+      countEl.textContent = `${label}: ${total}`;
+
+      renderPagination(totalPages);
+    }
+
+    function renderPagination(totalPages){
+      pagination.innerHTML = "";
+
+      if (totalPages <= 1) return;
+
+      const makeBtn = (label, page, disabled=false, active=false) => {
+        const b = document.createElement("button");
+        b.textContent = label;
+        if (disabled) b.disabled = true;
+        if (active) b.classList.add("active");
+        if (!disabled && !active){
+          b.addEventListener("click", () => {
+            currentPage = page;
+            render();
+            window.scrollTo({top:0, behavior:"smooth"});
+          });
+        }
+        return b;
+      };
+
+      pagination.appendChild(
+        makeBtn("«", currentPage - 1, currentPage === 1)
+      );
+
+      const windowSize = 5;
+      let start = Math.max(1, currentPage - 2);
+      let end   = Math.min(totalPages, start + windowSize - 1);
+      if (end - start < windowSize - 1){
+        start = Math.max(1, end - windowSize + 1);
+      }
+
+      for (let p = start; p <= end; p++){
+        pagination.appendChild(makeBtn(String(p), p, false, p === currentPage));
+      }
+
+      pagination.appendChild(
+        makeBtn("»", currentPage + 1, currentPage === totalPages)
+      );
+    }
+
+    /* ===== i18n ===== */
+    function applyI18n(){
+      const dict = T[lang];
+
+      const mapText = (key) => {
+        const el = document.querySelector(`[data-i18n="${key}"]`);
+        if (!el) return;
+        const parts = key.split(".");
+        let v = dict;
+        for (const k of parts) v = v[k];
+        el.textContent = v;
+      };
+
+      [
+        "site.title","site.tag",
+        "nav.products","nav.contact","nav.catalog",
+        "hero.title","hero.lead",
+        "products.title",
+        "contact.title","contact.emailL","contact.phoneL",
+        "form.send",
+        "filter.all","filter.pedro","filter.zele",
+        "cta.catalog","cta.catalogInline",
+        "catalog.title","catalog.close","catalog.fullscreen","catalog.exitFullscreen"
+      ].forEach(mapText);
+
+      document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+        const path = el.getAttribute("data-i18n-placeholder");
+        const parts = path.split(".");
+        let v = dict;
+        for (const k of parts) v = v[k];
+        el.placeholder = v;
+      });
+
+      if (toggleFullCatalog && catalogModal){
+        const d = dict.catalog;
+        toggleFullCatalog.textContent =
+          catalogModal.classList.contains("full") ? d.exitFullscreen : d.fullscreen;
+      }
+
+      render();
+    }
+
+    document.querySelectorAll(".lang button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".lang button").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        lang = btn.dataset.lang;
+        applyI18n();
+      });
+    });
+
+    /* ==== MODAL katalog ==== */
+    function openCat(){
+      catalogModal.classList.add("open");
+      catalogModal.setAttribute("aria-hidden","false");
+    }
+    function closeCat(){
+      catalogModal.classList.remove("open","full");
+      catalogModal.setAttribute("aria-hidden","true");
+      applyI18n();
+    }
+    function toggleFull(){
+      catalogModal.classList.toggle("full");
+      applyI18n();
+    }
+
+    openCatalog.addEventListener("click", openCat);
+    closeCatalog.addEventListener("click", closeCat);
+    toggleFullCatalog.addEventListener("click", toggleFull);
+
+    document.addEventListener("keydown", (e) => {
+      const anyOpen = document.querySelector(".modal.open");
+      if (e.key === "Escape" && anyOpen){
+        if (anyOpen.id === "catalogModal") closeCat();
+      }
+      if (e.key.toLowerCase() === "f"
+          && document.activeElement.tagName !== "INPUT"
+          && document.activeElement.tagName !== "TEXTAREA"){
+        if (catalogModal.classList.contains("open")) toggleFull();
+      }
+    });
+
+    /* ===== Nahratie produktov z products.json ===== */
+    async function loadProducts(){
+      try{
+        const res = await fetch("products.json?cache-bust=" + Date.now());
+        const data = await res.json();
+        ALL_PRODUCTS = data;
+      }catch(err){
+        console.error("Nepodarilo sa načítať products.json", err);
+        ALL_PRODUCTS = [];
+      }
+      FILTERED = ALL_PRODUCTS.slice();
+      applyI18n();
+    }
+
+    q.addEventListener("input", () => applyFilters());
+    cat.addEventListener("change", () => applyFilters());
+
+    loadProducts();
+  </script>
+</body>
+</html>
 
