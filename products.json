@@ -1,0 +1,142 @@
+[
+  {
+    "id": "003-pelendreky-jahoda-1000",
+    "brand": "Pedro",
+    "cat": ["pedro", "pendreky"],
+    "images": [
+      "https://global.ceskecukrovinky.sk/img/cms/PAN%20KILO%20175x175.png"
+    ],
+    "name": {
+      "sk": "003 - Pedro pelendreky jahoda 1000 g",
+      "en": "003 - Pedro Licorice Strawberry 1000 g",
+      "cs": "003 - Pedro pendreky jahoda 1000 g",
+      "de": "003 - Pedro Lakritz Erdbeere 1000 g"
+    },
+    "desc": {
+      "sk": "Jahodové pelendreky v kilovom balení.",
+      "en": "Strawberry licorice in 1 kg pack.",
+      "cs": "Jahodové pendreky v kilovém balení.",
+      "de": "Erdbeer-Lakritz im 1-kg-Beutel."
+    },
+    "priceEUR": 7.86,
+    "comp": {
+      "sk": "glukózový sirup, cukor, pšeničná múka, farbivá, arómy…",
+      "en": "glucose syrup, sugar, wheat flour, colours, flavours…",
+      "cs": "glukózový sirup, cukr, pšeničná mouka, barviva, aromata…",
+      "de": "Glukosesirup, Zucker, Weizenmehl, Farbstoffe, Aromen…"
+    },
+    "url": "https://global.ceskecukrovinky.sk/mikulas/23-002-pedro-pelendreky-jahoda-1000g.html"
+  },
+  {
+    "id": "004-pelendreky-kocky-1000",
+    "brand": "Pedro",
+    "cat": ["pedro", "pendreky"],
+    "images": [
+      "https://global.ceskecukrovinky.sk/img/cms/PAN%20KILO%20175x175.png"
+    ],
+    "name": {
+      "sk": "004 - Pedro pelendreky kocky 1000 g",
+      "en": "004 - Pedro Licorice Cubes 1000 g",
+      "cs": "004 - Pedro pendreky kostky 1000 g",
+      "de": "004 - Pedro Lakritz Würfel 1000 g"
+    },
+    "desc": {
+      "sk": "Retro pelendreky v tvare kociek.",
+      "en": "Retro licorice cubes.",
+      "cs": "Retro pendreky ve tvaru kostek.",
+      "de": "Retro Lakritz-Würfel."
+    },
+    "priceEUR": 7.86,
+    "comp": {
+      "sk": "glukózový sirup, cukor, želatína…",
+      "en": "glucose syrup, sugar, gelatine…",
+      "cs": "glukózový sirup, cukr, želatina…",
+      "de": "Glukosesirup, Zucker, Gelatine…"
+    },
+    "url": "https://global.ceskecukrovinky.sk/vanoce/25-004-pedro-pelendreky-kocky-1000g.html"
+  },
+  {
+    "id": "005-cierne-pelendreky-1000",
+    "brand": "Pedro",
+    "cat": ["pedro", "pendreky"],
+    "images": [
+      "https://global.ceskecukrovinky.sk/img/cms/PAN%20KILO%20175x175.png"
+    ],
+    "name": {
+      "sk": "005 - Pedro čierne pelendreky 1000 g",
+      "en": "005 - Pedro Black Licorice 1000 g",
+      "cs": "005 - Pedro černé pendreky 1000 g",
+      "de": "005 - Pedro Schwarze Lakritz 1000 g"
+    },
+    "desc": {
+      "sk": "Klasické čierne pelendreky.",
+      "en": "Classic black licorice.",
+      "cs": "Klasické černé pendreky.",
+      "de": "Klassische schwarze Lakritz."
+    },
+    "priceEUR": 7.86,
+    "comp": {
+      "sk": "glukózový sirup, cukor, melasa…",
+      "en": "glucose syrup, sugar, molasses…",
+      "cs": "glukózový sirup, cukr, melasa…",
+      "de": "Glukosesirup, Zucker, Melasse…"
+    },
+    "url": "https://global.ceskecukrovinky.sk/vanoce/26-005-pedro-cierne-pelendreky-1000g.html"
+  },
+  {
+    "id": "006-volske-vajcia-1000",
+    "brand": "Pedro",
+    "cat": ["pedro", "zele"],
+    "images": [
+      "https://www.ceskecukrovinky.sk/img/cms/PAN%20KILO%20175x175.png"
+    ],
+    "name": {
+      "sk": "006 - Pedro volské vajcia 1000 g",
+      "en": "006 - Pedro Fried Eggs 1000 g",
+      "cs": "006 - Pedro volská vejce 1000 g",
+      "de": "006 - Pedro Spiegeleier 1000 g"
+    },
+    "desc": {
+      "sk": "Želé vajíčka.",
+      "en": "Egg-shaped jellies.",
+      "cs": "Želé vejce.",
+      "de": "Ei-Gummis."
+    },
+    "priceEUR": 5.90,
+    "comp": {
+      "sk": "glukózový sirup, cukor, želatína…",
+      "en": "glucose syrup, sugar, gelatine…",
+      "cs": "glukózový sirup, cukr, želatina…",
+      "de": "Glukosesirup, Zucker, Gelatine…"
+    },
+    "url": "https://global.ceskecukrovinky.sk/zele/27-006-pedro-volske-vajcia-1000g.html"
+  },
+  {
+    "id": "007-ovocny-mix-1000",
+    "brand": "Pedro",
+    "cat": ["pedro", "zele"],
+    "images": [
+      "https://www.ceskecukrovinky.sk/img/cms/PAN%20KILO%20175x175.png"
+    ],
+    "name": {
+      "sk": "007 - Pedro želé ovocný mix 1000 g",
+      "en": "007 - Pedro Fruit Jelly Mix 1000 g",
+      "cs": "007 - Pedro ovocný mix 1000 g",
+      "de": "007 - Pedro Fruchtgummi Mix 1000 g"
+    },
+    "desc": {
+      "sk": "Ovocné želé v mixe príchutí.",
+      "en": "Fruit jelly mix.",
+      "cs": "Ovocné želé mix.",
+      "de": "Fruchtgummi-Mischung."
+    },
+    "priceEUR": 5.90,
+    "comp": {
+      "sk": "glukózový sirup, cukor, želatína…",
+      "en": "glucose syrup, sugar, gelatine…",
+      "cs": "glukózový sirup, cukr, želatina…",
+      "de": "Glukosesirup, Zucker, Gelatine…"
+    },
+    "url": "https://global.ceskecukrovinky.sk/valentyn/28-007-pedro-zele-ovocny-mix-1000g.html"
+  }
+]
