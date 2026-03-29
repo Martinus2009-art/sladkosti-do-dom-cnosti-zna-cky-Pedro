@@ -17,6 +17,8 @@
       --shadow:0 8px 24px rgba(0,0,0,.08);
     }
 
+    *{box-sizing:border-box}
+
     body{
       margin:0;
       font-family:Arial,sans-serif;
@@ -31,21 +33,44 @@
       text-align:center;
     }
 
+    header h1{
+      margin:0;
+      font-size:30px;
+    }
+
     .topbar{
       display:flex;
       flex-wrap:wrap;
       gap:10px;
       justify-content:center;
+      align-items:center;
       padding:15px;
       background:#fff;
+      box-shadow:0 2px 10px rgba(0,0,0,.04);
     }
 
     input{
-      padding:10px;
+      padding:10px 12px;
       border-radius:10px;
       border:1px solid #ddd;
       font-size:16px;
       min-width:250px;
+    }
+
+    .btn{
+      background:var(--brand);
+      color:#fff;
+      border:none;
+      padding:10px 16px;
+      border-radius:10px;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-block;
+      font-size:15px;
+    }
+
+    .btn:hover{
+      background:var(--brand-dark);
     }
 
     .cat-buttons{
@@ -53,7 +78,9 @@
       flex-wrap:wrap;
       gap:8px;
       justify-content:center;
-      padding:10px;
+      padding:14px 20px 0;
+      max-width:1200px;
+      margin:0 auto;
     }
 
     .cat-btn{
@@ -62,6 +89,11 @@
       border:none;
       background:#e5e7eb;
       cursor:pointer;
+      font-size:14px;
+    }
+
+    .cat-btn:hover{
+      background:#d1d5db;
     }
 
     .cat-btn.active{
@@ -69,11 +101,23 @@
       color:#fff;
     }
 
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:20px;
+    }
+
+    .info{
+      color:var(--muted);
+      font-size:14px;
+      margin-bottom:12px;
+      text-align:center;
+    }
+
     .products{
       display:grid;
       grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
       gap:20px;
-      padding:20px;
     }
 
     .card{
@@ -82,18 +126,91 @@
       padding:15px;
       text-align:center;
       box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
     }
 
     .card img{
       width:100%;
       height:180px;
       object-fit:contain;
+      border-radius:10px;
+      background:#fff;
+    }
+
+    .card h3{
+      font-size:17px;
+      margin:12px 0 8px;
+      min-height:48px;
+    }
+
+    .cats{
+      color:var(--muted);
+      font-size:12px;
+      min-height:18px;
     }
 
     .price{
       color:var(--brand);
       font-weight:bold;
       font-size:18px;
+      margin-top:10px;
+    }
+
+    .card a{
+      margin-top:12px;
+    }
+
+    .pagination{
+      text-align:center;
+      padding:24px 0 8px;
+    }
+
+    .pagebtn{
+      padding:8px 12px;
+      margin:4px;
+      border:none;
+      background:#e5e7eb;
+      cursor:pointer;
+      border-radius:8px;
+    }
+
+    .pagebtn.active{
+      background:var(--brand);
+      color:#fff;
+    }
+
+    .empty{
+      text-align:center;
+      color:var(--muted);
+      padding:40px 0;
+      grid-column:1 / -1;
+    }
+
+    footer{
+      background:#222;
+      color:#fff;
+      text-align:center;
+      padding:24px 20px;
+      margin-top:40px;
+    }
+
+    @media (max-width: 640px){
+      header h1{
+        font-size:24px;
+      }
+
+      .topbar{
+        padding:16px;
+      }
+
+      input, .btn{
+        width:100%;
+      }
+
+      input{
+        min-width:unset;
+      }
     }
   </style>
 </head>
@@ -105,37 +222,91 @@
 </header>
 
 <div class="topbar">
-  <input id="search" placeholder="Vyhľadať produkt...">
+  <input id="search" type="text" placeholder="Vyhľadať produkt...">
+
+  <a class="btn" href="https://global.ceskecukrovinky.sk/katalog-2026-1/" target="_blank" rel="noopener">
+    Otvoriť katalóg 2026
+  </a>
 </div>
 
 <div class="cat-buttons" id="categoryButtons"></div>
 
-<div class="products" id="products"></div>
+<div class="wrap">
+  <div class="info" id="info">Načítavam produkty...</div>
+  <div class="products" id="products"></div>
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<footer>
+  <p><strong>Kontakt</strong></p>
+  <p>Email: toblovaanna.praca@gmail.com</p>
+  <p>Tel: 0908068739</p>
+  <p>Facebook: Sladkosti do domácnosti</p>
+</footer>
 
 <script>
 let products = [];
 let filtered = [];
 let selectedCategory = "";
+let currentPage = 1;
+const perPage = 20;
 
 const productsEl = document.getElementById("products");
 const searchEl = document.getElementById("search");
 const categoryButtonsEl = document.getElementById("categoryButtons");
+const infoEl = document.getElementById("info");
+const paginationEl = document.getElementById("pagination");
 
 fetch("products.json")
   .then(res => res.json())
   .then(data => {
-    products = data;
+    products = Array.isArray(data) ? data : [];
     filtered = [...products];
     createCategories();
     render();
+  })
+  .catch(err => {
+    console.error(err);
+    infoEl.textContent = "Nepodarilo sa načítať products.json";
   });
+
+function formatCategoryName(cat) {
+  const labels = {
+    zele: "Želé",
+    pelendreky: "Pelendreky",
+    pasky: "Pásky",
+    lizanky: "Lízanky",
+    cukriky: "Cukríky",
+    cokolada: "Čokoláda",
+    pralinky: "Pralinky",
+    orechy: "Orechy",
+    oblatky: "Oblátky",
+    susienky: "Sušienky",
+    tycinky: "Tyčinky",
+    proteinove_tycinky: "Proteínové tyčinky",
+    lyofilizovane_ovocie: "Lyofilizované ovocie",
+    susene_ovocie: "Sušené ovocie",
+    semienka: "Semienka",
+    bezlepkove: "Bezlepkové",
+    hracky: "Hračky",
+    reklamne_predmety: "Reklamné predmety",
+    velkonocne_vajicka: "Veľkonočné vajíčka",
+    kysle: "Kyslé",
+    mix: "Mix",
+    akcia: "Akcia"
+  };
+
+  return labels[cat] || cat.replaceAll("_", " ");
+}
 
 function createCategories(){
   const set = new Set();
 
-  products.forEach(p=>{
-    if(p.cat){
-      p.cat.forEach(c=>set.add(c));
+  products.forEach(p => {
+    if (Array.isArray(p.cat)) {
+      p.cat.forEach(c => {
+        if (c && c.trim() !== "") set.add(c);
+      });
     }
   });
 
@@ -144,21 +315,19 @@ function createCategories(){
   const allBtn = document.createElement("button");
   allBtn.textContent = "Všetko";
   allBtn.className = "cat-btn active";
-
-  allBtn.onclick = ()=>{
+  allBtn.onclick = () => {
     selectedCategory = "";
     setActive(allBtn);
     applyFilters();
   };
-
   categoryButtonsEl.appendChild(allBtn);
 
-  [...set].sort().forEach(cat=>{
+  [...set].sort((a, b) => a.localeCompare(b, "sk")).forEach(cat => {
     const btn = document.createElement("button");
-    btn.textContent = cat;
+    btn.textContent = formatCategoryName(cat);
     btn.className = "cat-btn";
 
-    btn.onclick = ()=>{
+    btn.onclick = () => {
       selectedCategory = cat;
       setActive(btn);
       applyFilters();
@@ -169,23 +338,29 @@ function createCategories(){
 }
 
 function setActive(btn){
-  document.querySelectorAll(".cat-btn").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
 }
 
 function applyFilters(){
-  const text = searchEl.value.toLowerCase();
+  const text = searchEl.value.toLowerCase().trim();
 
-  filtered = products.filter(p=>{
+  filtered = products.filter(p => {
     const name = (p.name?.sk || "").toLowerCase();
-    const cats = p.cat || [];
+    const cats = Array.isArray(p.cat) ? p.cat : [];
 
-    return (
-      (name.includes(text) || cats.join(" ").includes(text)) &&
-      (selectedCategory === "" || cats.includes(selectedCategory))
-    );
+    const matchesText =
+      text === "" ||
+      name.includes(text) ||
+      cats.join(" ").toLowerCase().includes(text);
+
+    const matchesCategory =
+      selectedCategory === "" || cats.includes(selectedCategory);
+
+    return matchesText && matchesCategory;
   });
 
+  currentPage = 1;
   render();
 }
 
@@ -194,18 +369,65 @@ searchEl.addEventListener("input", applyFilters);
 function render(){
   productsEl.innerHTML = "";
 
-  filtered.forEach(p=>{
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / perPage));
+  const start = (currentPage - 1) * perPage;
+  const pageProducts = filtered.slice(start, start + perPage);
+
+  if (total === 0) {
+    infoEl.textContent = "Nenašli sa žiadne produkty.";
+    productsEl.innerHTML = '<div class="empty">Žiadne produkty.</div>';
+    paginationEl.innerHTML = "";
+    return;
+  }
+
+  infoEl.textContent = `Zobrazené ${start + 1}-${Math.min(start + perPage, total)} z ${total} produktov`;
+
+  pageProducts.forEach(p => {
+    const name = p.name?.sk || "Bez názvu";
+    const image = (p.images && p.images[0]) ? p.images[0] : "";
+    const price = typeof p.priceEUR === "number" ? p.priceEUR.toFixed(2).replace(".", ",") : "0,00";
+    const cats = Array.isArray(p.cat) ? p.cat.map(formatCategoryName).join(", ") : "";
+
     const card = document.createElement("div");
     card.className = "card";
 
     card.innerHTML = `
-      <h3>${p.name.sk}</h3>
-      <img src="${p.images[0] || ""}">
-      <p class="price">${p.priceEUR.toFixed(2)} €</p>
+      ${image
+        ? `<img src="${image}" alt="${name}" loading="lazy">`
+        : `<div style="height:180px;display:flex;align-items:center;justify-content:center;background:#f3f4f6;border-radius:10px;">Bez obrázka</div>`
+      }
+      <h3>${name}</h3>
+      <div class="cats">${cats || "Bez kategórie"}</div>
+      <div class="price">${price} €</div>
+      <a href="${p.url || '#'}" target="_blank" rel="noopener">
+        <button class="btn">Detail produktu</button>
+      </a>
     `;
 
     productsEl.appendChild(card);
   });
+
+  renderPagination(totalPages);
+}
+
+function renderPagination(totalPages) {
+  paginationEl.innerHTML = "";
+
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement("button");
+    btn.innerText = i;
+    btn.className = "pagebtn";
+    if (i === currentPage) btn.classList.add("active");
+
+    btn.onclick = () => {
+      currentPage = i;
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    paginationEl.appendChild(btn);
+  }
 }
 </script>
 
