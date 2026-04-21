@@ -248,6 +248,12 @@
       font-weight:bold;
     }
 
+    .price.muted{
+      color:var(--muted);
+      font-size:18px;
+      font-weight:600;
+    }
+
     .card-actions{
       margin-top:14px;
       display:flex;
@@ -310,36 +316,19 @@
     }
 
     @media (max-width:640px){
-      header h1{
-        font-size:26px;
-      }
-
-      .subtitle{
-        font-size:14px;
-      }
-
-      input,.btn,.btn-secondary{
-        width:100%;
-      }
-
-      input{
-        min-width:unset;
-      }
-
-      .products{
-        grid-template-columns:1fr;
-      }
-
-      .image-wrap,.img-placeholder,.card img{
-        height:220px;
-      }
+      header h1{font-size:26px}
+      .subtitle{font-size:14px}
+      input,.btn,.btn-secondary{width:100%}
+      input{min-width:unset}
+      .products{grid-template-columns:1fr}
+      .image-wrap,.img-placeholder,.card img{height:220px}
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Sladkosti do domácnosti 🍬</h1>
-    <div class="subtitle">Nový index s kontrolou dát a stabilným zobrazením produktov</div>
+    <div class="subtitle">Automaticky aktualizovaný katalóg produktov</div>
   </header>
 
   <div class="topbar">
@@ -359,8 +348,8 @@
         <div class="status-value" id="productsWithImages">0</div>
       </div>
       <div class="status-card">
-        <div class="status-label">Produkty s detailom</div>
-        <div class="status-value" id="productsWithUrl">0</div>
+        <div class="status-label">Produkty s cenou</div>
+        <div class="status-value" id="productsWithPrice">0</div>
       </div>
       <div class="status-card">
         <div class="status-label">Počet kategórií</div>
@@ -402,7 +391,7 @@
 
     const totalProductsEl = document.getElementById("totalProducts");
     const productsWithImagesEl = document.getElementById("productsWithImages");
-    const productsWithUrlEl = document.getElementById("productsWithUrl");
+    const productsWithPriceEl = document.getElementById("productsWithPrice");
     const categoryCountEl = document.getElementById("categoryCount");
 
     function formatCategoryName(cat){
@@ -444,15 +433,14 @@
       const images = Array.isArray(raw && raw.images) ? raw.images.filter(Boolean) : [];
       const url = typeof (raw && raw.url) === "string" && raw.url.trim() ? raw.url.trim() : "";
       const cat = Array.isArray(raw && raw.cat) ? raw.cat.filter(Boolean) : [];
-      const price = typeof (raw && raw.priceEUR) === "number"
-        ? raw.priceEUR
-        : Number((raw && raw.priceEUR) || 0);
+      const rawPrice = raw && raw.priceEUR;
+      const numericPrice = typeof rawPrice === "number" ? rawPrice : Number(rawPrice);
 
       return {
         id: (raw && raw.id) ?? (index + 1),
         name: { sk: name },
         images,
-        priceEUR: Number.isFinite(price) ? price : 0,
+        priceEUR: Number.isFinite(numericPrice) ? numericPrice : 0,
         url,
         cat
       };
@@ -463,22 +451,26 @@
     }
 
     function hasRealUrl(product){
-      return !!(product.url && product.url !== "#" && /^https?:\/\//i.test(product.url));
+      return !!(product.url && product.url.trim() !== "");
+    }
+
+    function hasRealPrice(product){
+      return typeof product.priceEUR === "number" && product.priceEUR > 0;
     }
 
     function updateStatus(){
       const withImages = products.filter(hasRealImage).length;
-      const withUrl = products.filter(hasRealUrl).length;
+      const withPrice = products.filter(hasRealPrice).length;
       const categories = new Set();
 
       products.forEach(p => (p.cat || []).forEach(c => categories.add(c)));
 
       totalProductsEl.textContent = products.length;
       productsWithImagesEl.textContent = withImages;
-      productsWithUrlEl.textContent = withUrl;
+      productsWithPriceEl.textContent = withPrice;
       categoryCountEl.textContent = categories.size;
 
-      noticeEl.innerHTML = `<strong>Kontrola:</strong> načítaných <strong>${products.length}</strong> produktov, z toho <strong>${withImages}</strong> s obrázkom a <strong>${withUrl}</strong> s funkčným detailom.`;
+      noticeEl.innerHTML = `<strong>Kontrola:</strong> načítaných <strong>${products.length}</strong> produktov, z toho <strong>${withImages}</strong> s obrázkom a <strong>${withPrice}</strong> s cenou.`;
     }
 
     function createCategories(){
@@ -565,9 +557,6 @@
 
       pageProducts.forEach(p => {
         const name = (p.name && p.name.sk) || "Bez názvu";
-        const price = typeof p.priceEUR === "number"
-          ? p.priceEUR.toFixed(2).replace(".", ",")
-          : "0,00";
         const cats = Array.isArray(p.cat)
           ? p.cat.map(formatCategoryName).join(", ")
           : "";
@@ -575,6 +564,10 @@
         const imageHtml = hasRealImage(p)
           ? `<div class="image-wrap"><img src="${p.images[0]}" alt="${name}" loading="lazy" onerror="this.parentElement.outerHTML='<div class=&quot;img-placeholder&quot;>Bez obrázka</div>'"></div>`
           : `<div class="img-placeholder">Bez obrázka</div>`;
+
+        const priceHtml = hasRealPrice(p)
+          ? `<div class="price">${p.priceEUR.toFixed(2).replace(".", ",")} €</div>`
+          : `<div class="price muted">Cena na vyžiadanie</div>`;
 
         const detailHtml = hasRealUrl(p)
           ? `<a class="btn" href="${p.url}" target="_blank" rel="noopener">Detail produktu</a>`
@@ -586,7 +579,7 @@
           ${imageHtml}
           <h3>${name}</h3>
           <div class="cats">${cats || "Bez kategórie"}</div>
-          <div class="price">${price} €</div>
+          ${priceHtml}
           <div class="card-actions">${detailHtml}</div>
         `;
 
