@@ -40,16 +40,31 @@ function normalizeCategory(text) {
 
 function extractPrice(text) {
   if (!text) return 0;
-  const cleaned = text.replace(/\u00a0/g, " ").replace(/€/g, "").replace(",", ".").trim();
+
+  const cleaned = text
+    .replace(/\u00a0/g, " ")
+    .replace(/€/g, "")
+    .replace(/\s/g, "")
+    .replace(",", ".")
+    .trim();
+
   const match = cleaned.match(/(\d+(?:\.\d+)?)/);
-  return match ? Number(match[1]) || 0 : 0;
+  if (!match) return 0;
+
+  return Number(match[1]) || 0;
 }
 
 async function fetchHtml(url) {
   const res = await fetch(url, {
-    headers: { "User-Agent": "Mozilla/5.0" }
+    headers: {
+      "User-Agent": "Mozilla/5.0"
+    }
   });
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status} for ${url}`);
+  }
+
   return await res.text();
 }
 
@@ -64,8 +79,81 @@ function fallbackCategoriesFromName(name) {
   if (n.includes("čoko") || n.includes("čokol") || n.includes("cokol")) out.add("cokolada");
   if (n.includes("kysl")) out.add("kysle");
   if (n.includes("mix")) out.add("mix");
+  if (n.includes("mikul")) out.add("mikulas");
+  if (n.includes("viano")) out.add("vanoce");
+  if (n.includes("valent")) out.add("valentyn");
+  if (n.includes("karneval")) out.add("karnevaly");
+  if (n.includes("veľkono") || n.includes("velkono")) out.add("velikonoce");
 
   return [...out];
+}
+
+function getImageUrl(imgEl) {
+  if (!imgEl || !imgEl.length) return "";
+
+  const img =
+    imgEl.attr("data-full-size-image-url") ||
+    imgEl.attr("data-src") ||
+    imgEl.attr("src") ||
+    "";
+
+  if (!img) return "";
+  return img.startsWith("http") ? img : `${BASE_URL}${img}`;
+}
+
+function getProductPrice(card) {
+  const priceSelectors = [
+    ".product-price-and-shipping .price",
+    ".current-price .price",
+    ".price",
+    "[itemprop='price']",
+    ".regular-price",
+    ".discount-price"
+  ];
+
+  for (const selector of priceSelectors) {
+    const el = card.find(selector).first();
+    const text = el.text().trim();
+    const price = extractPrice(text);
+
+    if (price > 0) {
+      return price;
+    }
+  }
+
+  return 0;
+}
+
+async function getProductCategories(productUrl, productName) {
+  try {
+    const html = await fetchHtml(productUrl);
+    const $ = cheerio.load(html);
+    const categories = new Set();
+
+    $(".breadcrumb a, nav.breadcrumb a").each((_, el) => {
+      const text = $(el).text().trim();
+      if (text) {
+        categories.add(normalizeCategory(text));
+      }
+    });
+
+    const fallback = fallbackCategoriesFromName(productName);
+    fallback.forEach((c) => categories.add(c));
+
+    return [...categories].filter(
+      (c) =>
+        c &&
+        ![
+          "domov",
+          "home",
+          "vsechno",
+          "všetko",
+          "novinky"
+        ].includes(c)
+    );
+  } catch {
+    return fallbackCategoriesFromName(productName);
+  }
 }
 
 async function scrapePage(url) {
@@ -75,22 +163,19 @@ async function scrapePage(url) {
   const products = [];
 
   $(".product-miniature, .js-product-miniature").each((_, el) => {
-    const nameEl = $(el).find(".product-title a, h2 a, h3 a").first();
-    const imgEl = $(el).find("img").first();
-    const priceEl = $(el).find(".price, .product-price-and-shipping .price").first();
+    const card = $(el);
+
+    const nameEl = card.find(".product-title a, h2 a, h3 a").first();
+    const imgEl = card.find("img").first();
 
     const name = nameEl.text().trim();
     const href = nameEl.attr("href") || "";
-    const productUrl = href.startsWith("http") ? href : `${BASE_URL}${href}`;
+    const productUrl = href
+      ? (href.startsWith("http") ? href : `${BASE_URL}${href}`)
+      : "";
 
-    const img =
-      imgEl.attr("data-full-size-image-url") ||
-      imgEl.attr("data-src") ||
-      imgEl.attr("src") ||
-      "";
-
-    const imageUrl = img ? (img.startsWith("http") ? img : `${BASE_URL}${img}`) : "";
-    const price = extractPrice(priceEl.text().trim());
+    const imageUrl = getImageUrl(imgEl);
+    const price = getProductPrice(card);
 
     if (name) {
       products.push({
@@ -123,21 +208,30 @@ async function main() {
   let page = 1;
 
   while (url && page <= 20) {
+    console.log(`Spracovávam stránku ${page}: ${url}`);
+
     const { products, nextUrl } = await scrapePage(url);
-    if (!products.length) break;
+
+    if (!products.length) {
+      break;
+    }
 
     for (const item of products) {
       const key = `${item.name}||${item.url}`;
       if (seen.has(key)) continue;
       seen.add(key);
 
+      const categories = item.url
+        ? await getProductCategories(item.url, item.name)
+        : fallbackCategoriesFromName(item.name);
+
       all.push({
         id: all.length + 1,
         name: { sk: item.name },
         images: item.image ? [item.image] : [],
         priceEUR: item.price || 0,
-        url: item.url,
-        cat: fallbackCategoriesFromName(item.name)
+        url: item.url || "",
+        cat: categories
       });
     }
 
@@ -147,6 +241,7 @@ async function main() {
 
   const outputPath = path.join(process.cwd(), "products.json");
   fs.writeFileSync(outputPath, JSON.stringify(all, null, 2), "utf8");
+
   console.log(`Hotovo. Uložených produktov: ${all.length}`);
 }
 
