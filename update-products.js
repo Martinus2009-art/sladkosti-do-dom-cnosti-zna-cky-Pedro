@@ -44,14 +44,15 @@ function extractPrice(text) {
   const cleaned = text
     .replace(/\u00a0/g, " ")
     .replace(/€/g, "")
-    .replace(/\s/g, "")
+    .replace(/\s+/g, "")
     .replace(",", ".")
     .trim();
 
   const match = cleaned.match(/(\d+(?:\.\d+)?)/);
   if (!match) return 0;
 
-  return Number(match[1]) || 0;
+  const price = Number(match[1]);
+  return Number.isFinite(price) ? price : 0;
 }
 
 async function fetchHtml(url) {
@@ -95,52 +96,110 @@ function getImageUrl(imgEl) {
     imgEl.attr("data-full-size-image-url") ||
     imgEl.attr("data-src") ||
     imgEl.attr("src") ||
+    imgEl.attr("data-lazyload") ||
     "";
 
   if (!img) return "";
   return img.startsWith("http") ? img : `${BASE_URL}${img}`;
 }
 
-function getProductPrice(card) {
-  const priceSelectors = [
+function getPriceFromCard(card) {
+  const selectors = [
     ".product-price-and-shipping .price",
     ".current-price .price",
     ".price",
     "[itemprop='price']",
     ".regular-price",
-    ".discount-price"
+    ".discount-price",
+    ".product-price"
   ];
 
-  for (const selector of priceSelectors) {
+  for (const selector of selectors) {
     const el = card.find(selector).first();
+    if (!el.length) continue;
+
     const text = el.text().trim();
     const price = extractPrice(text);
+    if (price > 0) return price;
 
-    if (price > 0) {
-      return price;
-    }
+    const attrPrice =
+      el.attr("content") ||
+      el.attr("data-price-amount") ||
+      el.attr("value") ||
+      "";
+
+    const attrParsed = extractPrice(attrPrice);
+    if (attrParsed > 0) return attrParsed;
   }
 
   return 0;
 }
 
-async function getProductCategories(productUrl, productName) {
+function getNextPageUrl($) {
+  const nextHref =
+    $('a[rel="next"]').attr("href") ||
+    $(".pagination-next a").attr("href") ||
+    $("a.next").attr("href");
+
+  if (!nextHref) return null;
+  return nextHref.startsWith("http") ? nextHref : `${BASE_URL}${nextHref}`;
+}
+
+async function getProductDetails(productUrl, productName) {
+  const result = {
+    price: 0,
+    categories: fallbackCategoriesFromName(productName)
+  };
+
+  if (!productUrl) return result;
+
   try {
     const html = await fetchHtml(productUrl);
     const $ = cheerio.load(html);
     const categories = new Set();
 
+    const priceSelectors = [
+      ".product-prices .current-price .price",
+      ".current-price .price",
+      ".product-price",
+      ".price",
+      "[itemprop='price']",
+      "meta[itemprop='price']"
+    ];
+
+    for (const selector of priceSelectors) {
+      const el = $(selector).first();
+      if (!el.length) continue;
+
+      const text = el.text().trim();
+      const price = extractPrice(text);
+      if (price > 0) {
+        result.price = price;
+        break;
+      }
+
+      const attrPrice =
+        el.attr("content") ||
+        el.attr("data-price-amount") ||
+        el.attr("value") ||
+        "";
+
+      const attrParsed = extractPrice(attrPrice);
+      if (attrParsed > 0) {
+        result.price = attrParsed;
+        break;
+      }
+    }
+
     $(".breadcrumb a, nav.breadcrumb a").each((_, el) => {
       const text = $(el).text().trim();
-      if (text) {
-        categories.add(normalizeCategory(text));
-      }
+      if (text) categories.add(normalizeCategory(text));
     });
 
     const fallback = fallbackCategoriesFromName(productName);
     fallback.forEach((c) => categories.add(c));
 
-    return [...categories].filter(
+    result.categories = [...categories].filter(
       (c) =>
         c &&
         ![
@@ -151,8 +210,10 @@ async function getProductCategories(productUrl, productName) {
           "novinky"
         ].includes(c)
     );
+
+    return result;
   } catch {
-    return fallbackCategoriesFromName(productName);
+    return result;
   }
 }
 
@@ -175,7 +236,7 @@ async function scrapePage(url) {
       : "";
 
     const imageUrl = getImageUrl(imgEl);
-    const price = getProductPrice(card);
+    const price = getPriceFromCard(card);
 
     if (name) {
       products.push({
@@ -187,17 +248,10 @@ async function scrapePage(url) {
     }
   });
 
-  let nextUrl = null;
-  const nextHref =
-    $('a[rel="next"]').attr("href") ||
-    $(".pagination-next a").attr("href") ||
-    $("a.next").attr("href");
-
-  if (nextHref) {
-    nextUrl = nextHref.startsWith("http") ? nextHref : `${BASE_URL}${nextHref}`;
-  }
-
-  return { products, nextUrl };
+  return {
+    products,
+    nextUrl: getNextPageUrl($)
+  };
 }
 
 async function main() {
@@ -212,26 +266,25 @@ async function main() {
 
     const { products, nextUrl } = await scrapePage(url);
 
-    if (!products.length) {
-      break;
-    }
+    if (!products.length) break;
 
     for (const item of products) {
       const key = `${item.name}||${item.url}`;
       if (seen.has(key)) continue;
       seen.add(key);
 
-      const categories = item.url
-        ? await getProductCategories(item.url, item.name)
-        : fallbackCategoriesFromName(item.name);
+      const details = await getProductDetails(item.url, item.name);
+
+      const finalPrice =
+        item.price > 0 ? item.price : details.price;
 
       all.push({
         id: all.length + 1,
         name: { sk: item.name },
         images: item.image ? [item.image] : [],
-        priceEUR: item.price || 0,
+        priceEUR: finalPrice > 0 ? finalPrice : 0,
         url: item.url || "",
-        cat: categories
+        cat: details.categories
       });
     }
 
