@@ -1,0 +1,12 @@
+{
+  "name": "sladkosti-katalog",
+  "version": "1.0.0",
+  "description": "Automatická aktualizácia products.json z katalógu",
+  "main": "update-products.js",
+  "scripts": {
+    "update-products": "node update-products.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  }
+}
