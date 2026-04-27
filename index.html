@@ -178,8 +178,9 @@
   <div class="topbar">
     <input id="search" type="text" placeholder="Vyhľadať produkt...">
 
-    <a class="btn" href="https://global.ceskecukrovinky.sk/katalog-2026-1/" target="_blank">
-      Otvoriť katalóg 2026
+    <!-- ✅ OPRAVENÝ LINK -->
+    <a class="btn" href="https://global.ceskecukrovinky.sk/darkove-produkty/180-katalog-produktov.html" target="_blank">
+      Otvoriť katalóg produktov
     </a>
   </div>
 </header>
@@ -213,47 +214,16 @@ const infoEl = document.getElementById("info");
 const paginationEl = document.getElementById("pagination");
 
 fetch("products.json")
-  .then(res => {
-    if (!res.ok) {
-      throw new Error("HTTP chyba: " + res.status);
-    }
-    return res.json();
-  })
+  .then(res => res.json())
   .then(data => {
     products = Array.isArray(data) ? data : [];
     filtered = [...products];
     createCategories();
     render();
-  })
-  .catch(err => {
-    console.error("CHYBA:", err);
-    infoEl.textContent = "Nepodarilo sa načítať products.json";
   });
 
 function formatCategoryName(cat) {
-  const labels = {
-    zele: "Želé",
-    pelendreky: "Pelendreky",
-    pasky: "Pásky",
-    lizanky: "Lízanky",
-    cokolada: "Čokoláda",
-    kysle: "Kyslé",
-    mix: "Mix",
-    oblatky: "Oblátky",
-    zdrava_vyziva: "Zdravá výživa",
-    "čokoládové_výrobky": "Čokoládové výrobky",
-    "čokoládové_tyčinky": "Čokoládové tyčinky",
-    "lízátka_a_bonbóny": "Lízatká a bonbóny",
-    "pendreky_a_pásky": "Pendreky a pásky",
-    "solené_výrobky": "Solené výrobky",
-    "proteinové_tyčinky": "Proteínové tyčinky",
-    "směsi_a_suché_plody": "Zmesi a suché plody",
-    "lyo-sušené_ovoce": "LYO sušené ovocie",
-    "fini_-_želé_a_pendreky": "FiNi želé a pendreky",
-    "úvodná_stránka": "Úvodná stránka"
-  };
-
-  return labels[cat] || cat.replaceAll("_", " ");
+  return cat.replaceAll("_", " ");
 }
 
 function createCategories() {
@@ -261,9 +231,7 @@ function createCategories() {
 
   products.forEach(p => {
     if (Array.isArray(p.cat)) {
-      p.cat.forEach(c => {
-        if (c && c.trim() !== "") set.add(c);
-      });
+      p.cat.forEach(c => set.add(c));
     }
   });
 
@@ -279,7 +247,7 @@ function createCategories() {
   };
   categoryButtonsEl.appendChild(allBtn);
 
-  [...set].sort((a, b) => a.localeCompare(b, "sk")).forEach(cat => {
+  [...set].forEach(cat => {
     const btn = document.createElement("button");
     btn.textContent = formatCategoryName(cat);
     btn.className = "cat-btn";
@@ -300,21 +268,16 @@ function setActive(btn) {
 }
 
 function applyFilters() {
-  const text = searchEl.value.toLowerCase().trim();
+  const text = searchEl.value.toLowerCase();
 
   filtered = products.filter(p => {
     const name = (p.name?.sk || "").toLowerCase();
-    const cats = Array.isArray(p.cat) ? p.cat : [];
+    const cats = p.cat || [];
 
-    const matchesText =
-      text === "" ||
-      name.includes(text) ||
-      cats.join(" ").toLowerCase().includes(text);
-
-    const matchesCategory =
-      selectedCategory === "" || cats.includes(selectedCategory);
-
-    return matchesText && matchesCategory;
+    return (
+      name.includes(text) &&
+      (selectedCategory === "" || cats.includes(selectedCategory))
+    );
   });
 
   currentPage = 1;
@@ -326,41 +289,19 @@ searchEl.addEventListener("input", applyFilters);
 function render() {
   productsEl.innerHTML = "";
 
-  const total = filtered.length;
-  const totalPages = Math.max(1, Math.ceil(total / perPage));
+  const totalPages = Math.ceil(filtered.length / perPage);
   const start = (currentPage - 1) * perPage;
   const pageProducts = filtered.slice(start, start + perPage);
 
-  if (total === 0) {
-    infoEl.textContent = "Nenašli sa žiadne produkty.";
-    productsEl.innerHTML = "<div>Žiadne produkty.</div>";
-    paginationEl.innerHTML = "";
-    return;
-  }
-
-  infoEl.textContent =
-    "Zobrazené " + (start + 1) + "-" + Math.min(start + perPage, total) + " z " + total + " produktov";
-
   pageProducts.forEach(p => {
-    const name = p.name?.sk || "Bez názvu";
-    const price = typeof p.priceEUR === "number"
-      ? p.priceEUR.toFixed(2).replace(".", ",")
-      : "0,00";
-
-    const img = p.images?.[0] || "";
-    const cats = Array.isArray(p.cat)
-      ? p.cat.map(formatCategoryName).join(", ")
-      : "";
-
     const card = document.createElement("div");
     card.className = "card";
 
     card.innerHTML = `
-      <img src="${img}" alt="${name}" loading="lazy" onerror="this.style.display='none'">
-      <h3>${name}</h3>
-      <div class="cats">${cats || "Bez kategórie"}</div>
-      <div class="price">${price} €</div>
-      <a href="${p.url || "#"}" target="_blank">
+      <img src="${p.images?.[0] || ""}">
+      <h3>${p.name?.sk || ""}</h3>
+      <div class="price">${p.priceEUR} €</div>
+      <a href="${p.url}" target="_blank">
         <button class="btn">Detail produktu</button>
       </a>
     `;
@@ -379,14 +320,11 @@ function renderPagination(totalPages) {
     btn.textContent = i;
     btn.className = "pagebtn";
 
-    if (i === currentPage) {
-      btn.classList.add("active");
-    }
+    if (i === currentPage) btn.classList.add("active");
 
     btn.onclick = () => {
       currentPage = i;
       render();
-      window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     paginationEl.appendChild(btn);
