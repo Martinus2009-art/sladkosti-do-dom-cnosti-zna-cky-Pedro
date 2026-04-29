@@ -2705,7 +2705,7 @@
       "sk": "236 - FiNi Plnené sladké drievko pelendreky 1000g"
     },
     "images": [
-      "https://global.ceskecukrovinky.sk/1068-thickbox_default/236-fini-plnene-sladke-drievko-pelendreky-1000g.jpg"
+      "https://global.ceskecukrovinky.sk/3758-thickbox_default/236-fini-plnene-sladke-drievko-pelendreky-1000g.jpg"
     ],
     "priceEUR": 7.53,
     "url": "https://global.ceskecukrovinky.sk/fini-zele-a-pendreky/519-236-fini-plnene-sladke-drievko-pelendreky-1000g.html",
@@ -2968,6 +2968,21 @@
   {
     "id": 193,
     "name": {
+      "sk": "306 - Park Lane ŽABKY 4,5g -2,5kg"
+    },
+    "images": [
+      "https://global.ceskecukrovinky.sk/129-thickbox_default/306-park-lane-zabky-45g-25kg.jpg"
+    ],
+    "priceEUR": 15.25,
+    "url": "https://global.ceskecukrovinky.sk/zele/157-306-park-lane-zabky-45g-25kg.html",
+    "cat": [
+      "úvodná_stránka",
+      "zele"
+    ]
+  },
+  {
+    "id": 194,
+    "name": {
       "sk": "308 - Park Lane MEDVÍDCI 3kg"
     },
     "images": [
@@ -2981,7 +2996,7 @@
     ]
   },
   {
-    "id": 194,
+    "id": 195,
     "name": {
       "sk": "309 - Park Lane Čerešne 3 kg"
     },
@@ -2996,7 +3011,7 @@
     ]
   },
   {
-    "id": 195,
+    "id": 196,
     "name": {
       "sk": "314 - Park lane Wine Gums 3kg"
     },
@@ -3011,7 +3026,7 @@
     ]
   },
   {
-    "id": 196,
+    "id": 197,
     "name": {
       "sk": "321 - Park Lane Kyselé COLA krúžky 2 kg"
     },
@@ -3026,7 +3041,7 @@
     ]
   },
   {
-    "id": 197,
+    "id": 198,
     "name": {
       "sk": "322 - MELOUN - kyslé želé 2,5kg"
     },
@@ -3042,7 +3057,7 @@
     ]
   },
   {
-    "id": 198,
+    "id": 199,
     "name": {
       "sk": "325 - Park lane -Cola Žížalky 3kg"
     },
@@ -3057,7 +3072,7 @@
     ]
   },
   {
-    "id": 199,
+    "id": 200,
     "name": {
       "sk": "326 - Park lane - Sladké Žížalky 3kg"
     },
@@ -3072,7 +3087,7 @@
     ]
   },
   {
-    "id": 200,
+    "id": 201,
     "name": {
       "sk": "327 - Parklane broskyňové Srdiečka 2,5 kg"
     },
@@ -3087,7 +3102,7 @@
     ]
   },
   {
-    "id": 201,
+    "id": 202,
     "name": {
       "sk": "387 - Sladký mix ovocné pelendreky 700g"
     },
@@ -3104,7 +3119,7 @@
     ]
   },
   {
-    "id": 202,
+    "id": 203,
     "name": {
       "sk": "388 - Kyslý mix ovocné pelendreky 700g"
     },
@@ -3122,7 +3137,7 @@
     ]
   },
   {
-    "id": 203,
+    "id": 204,
     "name": {
       "sk": "409 - Mini pásky Mix 1000g"
     },
@@ -3139,7 +3154,7 @@
     ]
   },
   {
-    "id": 204,
+    "id": 205,
     "name": {
       "sk": "412 - Ovocné pelendreky mix 1000g"
     },
@@ -3156,7 +3171,7 @@
     ]
   },
   {
-    "id": 205,
+    "id": 206,
     "name": {
       "sk": "420 -Crema - arašidová pomazánka 400g"
     },
@@ -3171,7 +3186,7 @@
     ]
   },
   {
-    "id": 206,
+    "id": 207,
     "name": {
       "sk": "500 - Toffix ovocný 1000g"
     },
@@ -3186,7 +3201,7 @@
     ]
   },
   {
-    "id": 207,
+    "id": 208,
     "name": {
       "sk": "501 - Toffix Káva 1000g"
     },
@@ -3201,7 +3216,7 @@
     ]
   },
   {
-    "id": 208,
+    "id": 209,
     "name": {
       "sk": "506 - Festival pralinky s kakaovým krémom 1000g"
     },
@@ -3216,7 +3231,7 @@
     ]
   },
   {
-    "id": 209,
+    "id": 210,
     "name": {
       "sk": "508 - KYSLÝ Toffix 1000g"
     },
@@ -3232,7 +3247,7 @@
     ]
   },
   {
-    "id": 210,
+    "id": 211,
     "name": {
       "sk": "511 - (1 vajce 2,40 €) XXXL Princezné, plastové vajce, bábika–hračka a cukrovinka 25g/6ks"
     },
@@ -3247,7 +3262,7 @@
     ]
   },
   {
-    "id": 211,
+    "id": 212,
     "name": {
       "sk": "512 - (1 vajce 2,40 €) XXXL Zoo zvieratká, plastové vajce, hračka a cukrovinka 25g/6 ks"
     },
@@ -3262,7 +3277,7 @@
     ]
   },
   {
-    "id": 212,
+    "id": 213,
     "name": {
       "sk": "513 - (1 vajce 2,40 €) XXXL Off Road – plastové vajce, terénne auto a cukrovinka 25g/6ks"
     },
@@ -3277,7 +3292,7 @@
     ]
   },
   {
-    "id": 213,
+    "id": 214,
     "name": {
       "sk": "514 -(1 vajce 2,40 €) XXXL Zvieratká– plast. vajce, hračka a cukrovinka 25g/6ks"
     },
@@ -3292,7 +3307,7 @@
     ]
   },
   {
-    "id": 214,
+    "id": 215,
     "name": {
       "sk": "515 - (1 vajce 2,40 Eur) XXXL Dinosaur plast. vajce, hračka a cukrovinka 25g/6ks"
     },
@@ -3307,7 +3322,7 @@
     ]
   },
   {
-    "id": 215,
+    "id": 216,
     "name": {
       "sk": "517 - ((1 vajce 2,40Eur) XXXL plastové motorkové vajce, hračka a cukrovinka 25 g / 6 ks"
     },
@@ -3322,7 +3337,7 @@
     ]
   },
   {
-    "id": 216,
+    "id": 217,
     "name": {
       "sk": "518 - (1 vajce 2,40 Eur),XXXL Koně - plastové vajce, hračka a cukrovinka 25g/6ks"
     },
@@ -3337,7 +3352,7 @@
     ]
   },
   {
-    "id": 217,
+    "id": 218,
     "name": {
       "sk": "519 - Toffix DOZA ovocný 500g"
     },
