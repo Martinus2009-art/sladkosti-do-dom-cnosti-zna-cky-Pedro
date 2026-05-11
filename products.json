@@ -3339,21 +3339,6 @@
   {
     "id": 217,
     "name": {
-      "sk": "506 - Festival pralinky s kakaovým krémom 1000g"
-    },
-    "images": [
-      "https://global.ceskecukrovinky.sk/237-thickbox_default/506-festival-pralinky-s-kakaovym-kremom-1000g.jpg"
-    ],
-    "priceEUR": 10.84,
-    "url": "https://global.ceskecukrovinky.sk/cokoladove-vyrobky/235-506-festival-pralinky-s-kakaovym-kremom-1000g.html",
-    "cat": [
-      "úvodná_stránka",
-      "čokoládové_výrobky"
-    ]
-  },
-  {
-    "id": 218,
-    "name": {
       "sk": "508 - KYSLÝ Toffix 1000g"
     },
     "images": [
@@ -3368,7 +3353,7 @@
     ]
   },
   {
-    "id": 219,
+    "id": 218,
     "name": {
       "sk": "511 - (1 vajce 2,40 €) XXXL Princezné, plastové vajce, bábika–hračka a cukrovinka 25g/6ks"
     },
@@ -3383,7 +3368,7 @@
     ]
   },
   {
-    "id": 220,
+    "id": 219,
     "name": {
       "sk": "512 - (1 vajce 2,40 €) XXXL Zoo zvieratká, plastové vajce, hračka a cukrovinka 25g/6 ks"
     },
@@ -3398,7 +3383,7 @@
     ]
   },
   {
-    "id": 221,
+    "id": 220,
     "name": {
       "sk": "513 - (1 vajce 2,40 €) XXXL Off Road – plastové vajce, terénne auto a cukrovinka 25g/6ks"
     },
@@ -3413,7 +3398,7 @@
     ]
   },
   {
-    "id": 222,
+    "id": 221,
     "name": {
       "sk": "514 -(1 vajce 2,40 €) XXXL Zvieratká– plast. vajce, hračka a cukrovinka 25g/6ks"
     },
@@ -3428,7 +3413,7 @@
     ]
   },
   {
-    "id": 223,
+    "id": 222,
     "name": {
       "sk": "515 - (1 vajce 2,40 Eur) XXXL Dinosaur plast. vajce, hračka a cukrovinka 25g/6ks"
     },
@@ -3443,7 +3428,7 @@
     ]
   },
   {
-    "id": 224,
+    "id": 223,
     "name": {
       "sk": "517 - ((1 vajce 2,40Eur) XXXL plastové motorkové vajce, hračka a cukrovinka 25 g / 6 ks"
     },
@@ -3458,7 +3443,7 @@
     ]
   },
   {
-    "id": 225,
+    "id": 224,
     "name": {
       "sk": "518 - (1 vajce 2,40 Eur),XXXL Koně - plastové vajce, hračka a cukrovinka 25g/6ks"
     },
@@ -3473,7 +3458,7 @@
     ]
   },
   {
-    "id": 226,
+    "id": 225,
     "name": {
       "sk": "519 - Toffix DOZA ovocný 500g"
     },
