@@ -2160,21 +2160,6 @@
   {
     "id": 141,
     "name": {
-      "sk": "196 - LYO - Broskyne plátky 40g"
-    },
-    "images": [
-      "https://global.ceskecukrovinky.sk/342-thickbox_default/196-lyo-broskyne-platky-40g.jpg"
-    ],
-    "priceEUR": 3.66,
-    "url": "https://global.ceskecukrovinky.sk/lyo-susene-ovocie/307-196-lyo-broskyne-platky-40g.html",
-    "cat": [
-      "úvodná_stránka",
-      "lyo-sušené_ovoce"
-    ]
-  },
-  {
-    "id": 142,
-    "name": {
       "sk": "197 - LYO - Figy 40g"
     },
     "images": [
@@ -2188,7 +2173,7 @@
     ]
   },
   {
-    "id": 143,
+    "id": 142,
     "name": {
       "sk": "198 - LYO - Marhule 40g"
     },
@@ -2197,6 +2182,21 @@
     ],
     "priceEUR": 4.07,
     "url": "https://global.ceskecukrovinky.sk/lyo-susene-ovocie/309-198-lyo-marhule-40g.html",
+    "cat": [
+      "úvodná_stránka",
+      "lyo-sušené_ovoce"
+    ]
+  },
+  {
+    "id": 143,
+    "name": {
+      "sk": "200 - LYO - Banán 40g"
+    },
+    "images": [
+      "https://global.ceskecukrovinky.sk/346-thickbox_default/200-lyo-banan-40g.jpg"
+    ],
+    "priceEUR": 2.43,
+    "url": "https://global.ceskecukrovinky.sk/lyo-susene-ovocie/311-200-lyo-banan-40g.html",
     "cat": [
       "úvodná_stránka",
       "lyo-sušené_ovoce"
@@ -2940,7 +2940,7 @@
       "sk": "254 - ZLATÉ Chrumkavé asteroidy 750g"
     },
     "images": [
-      "https://global.ceskecukrovinky.sk/3826-thickbox_default/254-zlate-chrumkave-asteroidy-750g.jpg"
+      "https://global.ceskecukrovinky.sk/3807-thickbox_default/254-zlate-chrumkave-asteroidy-750g.jpg"
     ],
     "priceEUR": 8.58,
     "url": "https://global.ceskecukrovinky.sk/krupave-zele/666-254-zlate-chrumkave-asteroidy-750g.html",
